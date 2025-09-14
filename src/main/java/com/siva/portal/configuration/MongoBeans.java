@@ -10,6 +10,6 @@ public class MongoBeans {
 
   @Bean
   public com.siva.portal.repo.LookupValueDao lookupValueDao(AbstractMongoDataSource ds) {
-    return new MongoLookupValueDao(ds);
+    return new MongoLookupValueDao((AbstractMongoDataSource) ds);
   }
 }

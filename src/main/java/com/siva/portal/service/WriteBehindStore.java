@@ -2,6 +2,8 @@
 package com.siva.portal.service;
 
 import com.siva.portal.repo.LookupValueDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Queue;
@@ -13,7 +15,8 @@ public class WriteBehindStore {
   private final LookupValueDao dao;
   private final Queue<String> pending = new ConcurrentLinkedQueue<>();
 
-  public WriteBehindStore(LookupValueDao dao) {
+  @Autowired
+  public WriteBehindStore(@Qualifier("mongoLookupValueDao") LookupValueDao dao) {
     this.dao = dao;
   }
 

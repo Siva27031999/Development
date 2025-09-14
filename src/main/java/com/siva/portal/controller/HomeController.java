@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String index() {
-        return "redirect:/index.html";
+        return "index.html";
+    }
+
+    @GetMapping("/portal")
+    public String portal() {
+        return "portal.html"; // Ensure portal.html exists in your templates/static folder
     }
 }

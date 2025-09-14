@@ -21,20 +21,18 @@
       const menu  = document.getElementById('lookupMenu');
       const toast = document.getElementById('toast');
 
+      const LOOKUP_KEY = 'default'; // or whatever key name you use
+      const base = `/portal/api/lookup/${LOOKUP_KEY}`;
+
       let lastQuery = '';
       let hideTimer;
 
-      const debounce = (fn, ms=150) => {
-        let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }
-      };
+      const debounce = (fn, ms=150) => { let t; return (...a)=>{clearTimeout(t); t=setTimeout(()=>fn(...a),ms);} };
 
       const showMenu = () => { menu.style.display = 'block'; };
       const hideMenu = () => { menu.style.display = 'none'; };
-
-      const setToast = (msg) => {
-        toast.textContent = msg; toast.style.display = 'block';
-        clearTimeout(hideTimer); hideTimer = setTimeout(() => toast.style.display = 'none', 2500);
-      };
+      const setToast = (msg) => { toast.textContent = msg; toast.style.display = 'block';
+        clearTimeout(hideTimer); hideTimer = setTimeout(() => toast.style.display = 'none', 2500); };
 
       const renderItems = (q, items) => {
         menu.innerHTML = '';
@@ -48,12 +46,16 @@
         } else {
           items.forEach(v => {
             const li = document.createElement('li');
-            li.className = 'list-group-item list-group-item-action';
-            li.textContent = v;
-            li.onclick = () => { input.value = v; hideMenu(); };
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.innerHTML = `<span class="me-2 flex-grow-1">${v}</span>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-secondary select-btn">Select</button>
+                <button class="btn btn-outline-danger delete-btn" title="Delete">✕</button>
+              </div>`;
+            li.querySelector('.select-btn').onclick = () => { input.value = v; hideMenu(); };
+            li.querySelector('.delete-btn').onclick = () => deleteValue(v);
             menu.appendChild(li);
           });
-          // If the typed text isn't identical to any item, offer an add row
           if (q && !items.some(x => x.toLowerCase() === q.toLowerCase())) {
             const li = document.createElement('li');
             li.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -69,24 +71,33 @@
       const search = async (q) => {
         lastQuery = q;
         try {
-          const r = await fetch(`/portal/api/lookup?q=${encodeURIComponent(q)}&limit=8`);
+          const r = await fetch(`${base}?q=${encodeURIComponent(q)}&limit=8`);
           if (!r.ok) return;
           const data = await r.json();
           if (q === lastQuery) renderItems(q, data);
-        } catch (e) { /* ignore network blips */ }
+        } catch {}
       };
 
       const addValue = async (v) => {
-        // Optimistic UX
         setToast(`Saved locally: “${v}” (will sync to DB when available).`);
         try {
-          await fetch('/portal/api/lookup', {
+          await fetch(base, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ value: v })
           });
-        } catch (e) { /* ignore errors by design */ }
+        } catch {}
         input.value = v; hideMenu();
+      };
+
+      const deleteValue = async (v) => {
+        setToast(`Removed locally: “${v}” (DB will update when available).`);
+        try {
+          const url = `${base}?value=${encodeURIComponent(v)}`;
+          await fetch(url, { method: 'DELETE' });
+          // refresh list to reflect deletion
+          search(input.value);
+        } catch {}
       };
 
       input.addEventListener('focus', () => search(input.value));

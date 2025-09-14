@@ -5,7 +5,7 @@ import com.siva.portal.service.LookupService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/lookup")
@@ -16,20 +16,38 @@ public class LookupController {
     this.service = service;
   }
 
-  @GetMapping
-  public List<String> suggest(@RequestParam(defaultValue = "") String q,
+  // ---- SUGGEST ----
+  @GetMapping({"", "/{key}"})
+  public List<String> suggest(@PathVariable(name = "key", required = false) String key,
+                              @RequestParam(defaultValue = "") String q,
                               @RequestParam(defaultValue = "8") int limit) {
-    return service.suggest(q, Math.max(1, Math.min(50, limit)));
+    String k = key == null ? LookupService.DEFAULT_KEY : key;
+    return service.suggest(k, q, Math.max(1, Math.min(50, limit)));
   }
 
+  // ---- ADD ----
   static record AddRequest(String value) {}
   static record AddResponse(boolean accepted) {}
 
-  @PostMapping
-  public ResponseEntity<AddResponse> add(@RequestBody AddRequest req) {
+  @PostMapping({"", "/{key}"})
+  public ResponseEntity<AddResponse> add(@PathVariable(name = "key", required = false) String key,
+                                         @RequestBody AddRequest req) {
     if (req == null || req.value() == null || req.value().trim().isEmpty())
       return ResponseEntity.badRequest().build();
-    service.addIfAbsent(req.value());
+    String k = key == null ? LookupService.DEFAULT_KEY : key;
+    service.addIfAbsent(k, req.value());
     return ResponseEntity.ok(new AddResponse(true));
   }
+
+  // ---- DELETE ----
+  @DeleteMapping({"", "/{key}"})
+  public ResponseEntity<Void> delete(@PathVariable(name = "key", required = false) String key,
+                                     @RequestParam String value) {
+    if (value == null || value.trim().isEmpty())
+      return ResponseEntity.badRequest().build();
+    String k = key == null ? LookupService.DEFAULT_KEY : key;
+    service.deleteValue(k, value);
+    return ResponseEntity.noContent().build();
+  }
 }
+

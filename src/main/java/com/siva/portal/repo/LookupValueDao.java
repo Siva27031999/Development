@@ -1,13 +1,15 @@
 // repo/LookupValueDao.java
 package com.siva.portal.repo;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
-@Repository
+import java.util.Optional;
+
 public interface LookupValueDao {
-  boolean existsByNorm(String norm);
-  void save(String value, String norm) throws Exception;
-  List<String> findAllValues();
   void ensureIndexes();
+  List<String> findAllValues(String key);
+  void upsertBucket(String key, List<DocValue> values) throws Exception;
+  Optional<Bucket> getBucket(String key);
+
+  record DocValue(String value, String norm, int frequency, long createdAt) {}
+  record Bucket(String key, List<DocValue> values) {}
 }

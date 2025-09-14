@@ -84,4 +84,52 @@ public class InMemoryIndex {
   public void preloadAll(Collection<String> values) {
     for (String v : values) upsertValue(v);
   }
+
+  // InMemoryIndex.java (only the new methods)
+  public void removeValue(String norm) {
+    lock.writeLock().lock();
+    try {
+      if (!normSet.remove(norm)) return;
+      // remove from Trie
+      // We’ll rebuild this branch carefully:
+      removeFromTrie(root, norm, 0);
+      freq.remove(norm);
+    } finally {
+      lock.writeLock().unlock();
+    }
+  }
+
+  private boolean removeFromTrie(TrieNode node, String norm, int i) {
+    if (i == norm.length()) {
+      if (node.isWord) { node.isWord = false; node.word = null; }
+    } else {
+      char ch = norm.charAt(i);
+      TrieNode child = node.children.get(ch);
+      if (child != null && removeFromTrie(child, norm, i+1)) {
+        node.children.remove(ch);
+      }
+    }
+    // Remove empty nodes to keep trie tidy
+    return !node.isWord && node.children.isEmpty();
+  }
+
+  // For persistence: immutable view of current entries
+  public static record Entry(String value, String norm, int frequency, long createdAt) {}
+
+  public List<Entry> snapshot() {
+    lock.readLock().lock();
+    try {
+      List<String> all = new ArrayList<>();
+      dfs(root, all);
+      List<Entry> out = new ArrayList<>(all.size());
+      for (String v : all) {
+        String norm = normalize(v);
+        out.add(new Entry(v, norm, freq.getOrDefault(norm, 1), 0L));
+      }
+      return out;
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
 }

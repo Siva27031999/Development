@@ -2,46 +2,92 @@
 package com.siva.portal.service;
 
 import com.siva.portal.repo.LookupValueDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-@Service
 public class WriteBehindStore {
 
   private final LookupValueDao dao;
-  private final Queue<String> pending = new ConcurrentLinkedQueue<>();
+  private final Function<String, List<LookupValueDao.DocValue>> snapshotSupplier;
 
-  @Autowired
-  public WriteBehindStore(@Qualifier("mongoLookupValueDao") LookupValueDao dao) {
+  private enum Type { ADD, DELETE, TOUCH }
+  private record Op(Type type, String key, String value) {}
+
+  private final Queue<Op> pending = new ConcurrentLinkedQueue<>();
+
+  public WriteBehindStore(LookupValueDao dao,
+                          Function<String, List<LookupValueDao.DocValue>> snapshotSupplier) {
     this.dao = dao;
+    this.snapshotSupplier = snapshotSupplier;
   }
 
-  public void enqueue(String value) {
-    pending.offer(value);
+  public void enqueueAdd(String key, String value)   { enqueue(new Op(Type.ADD, key, value)); }
+  public void enqueueDelete(String key, String value){ enqueue(new Op(Type.DELETE, key, value)); }
+  public void enqueueTouch(String key, String value) { enqueue(new Op(Type.TOUCH, key, value)); }
+
+  private void enqueue(Op op) {
+    pending.offer(op);
     drain();
   }
 
-  /** Try to persist everything currently pending; stop at first failure. */
+  /** Batch ops per key → read-modify-write the bucket with upsert. */
   public void drain() {
-    while (true) {
-      String v = pending.peek();
-      if (v == null) return;
-      String norm = InMemoryIndex.normalize(v);
+    // Drain a snapshot of queue to avoid infinite loops when errors happen
+    List<Op> ops = new ArrayList<>();
+    for (int i = 0; i < 512; i++) { // hard cap per drain to bound work
+      Op op = pending.poll();
+      if (op == null) break;
+      ops.add(op);
+    }
+    if (ops.isEmpty()) return;
+
+    Map<String, List<Op>> byKey = ops.stream().collect(Collectors.groupingBy(Op::key));
+    for (var entry : byKey.entrySet()) {
+      String key = entry.getKey();
+      List<Op> keyOps = entry.getValue();
       try {
-        if (!dao.existsByNorm(norm)) {
-          dao.save(v, norm);
-        } else {
-          // already exists in DB, OK
+        // Start from current in-memory snapshot (authoritative for fast updates)
+        List<LookupValueDao.DocValue> snap = snapshotSupplier.apply(key);
+        // Build index by norm
+        Map<String, LookupValueDao.DocValue> map = new LinkedHashMap<>();
+        for (var dv : snap) map.put(dv.norm(), dv);
+
+        for (Op op : keyOps) {
+          String norm = InMemoryIndex.normalize(op.value());
+          switch (op.type) {
+            case ADD -> {
+              var existing = map.get(norm);
+              if (existing == null) {
+                map.put(norm, new LookupValueDao.DocValue(op.value(), norm, 1, System.currentTimeMillis()));
+              } else {
+                map.put(norm, new LookupValueDao.DocValue(existing.value(), norm, existing.frequency() + 1, existing.createdAt()));
+              }
+            }
+            case TOUCH -> {
+              var existing = map.get(norm);
+              if (existing != null) {
+                map.put(norm, new LookupValueDao.DocValue(existing.value(), norm, existing.frequency() + 1, existing.createdAt()));
+              }
+            }
+            case DELETE -> map.remove(norm);
+          }
         }
-        pending.poll(); // success/exists → remove
+
+        dao.upsertBucket(key, new ArrayList<>(map.values()));
       } catch (Exception e) {
-        // DB might be down; keep item in queue & stop draining now
+        // On any error (e.g., DB down), push this key's ops back to the head in order
+        // preserving semantics: they'll retry on the next enqueue/drain.
+        // (Note: using addAll to the FRONT would reorder; we re-queue them to tail)
+        pending.addAll(keyOps);
+        // Stop now to keep earlier-guaranteed semantics
         return;
       }
     }
+
+    // If queue still has items, we leave them for next enqueue call.
   }
 }
+

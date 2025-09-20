@@ -9,15 +9,23 @@ import com.mongodb.client.model.ReplaceOptions;
 import com.siva.portal.configuration.LookupConfig;
 import com.siva.portal.database.AbstractMongoDataSource;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MongoLookupValueDao implements LookupValueDao {
 
+  private static final Logger LOG = LoggerFactory.getLogger(MongoLookupValueDao.class);
   private final MongoCollection<Document> col;
 
   public MongoLookupValueDao(AbstractMongoDataSource ds) {
@@ -27,13 +35,38 @@ public class MongoLookupValueDao implements LookupValueDao {
 
   @Override
   public void ensureIndexes() {
+    // 1) Drop legacy unique index on 'norm' (from older per-value schema) if present,
+    //    since bucket documents don't have 'norm' at top level and a unique index on
+    //    a missing field would allow only one such document.
+    try {
+      for (Document ix : col.listIndexes()) {
+        boolean unique = Boolean.TRUE.equals(ix.get("unique"));
+        @SuppressWarnings("unchecked")
+        Document keyDoc = (Document) ix.get("key");
+        if (unique && keyDoc != null) {
+          boolean hasNorm = keyDoc.containsKey("norm");
+          boolean hasKey  = keyDoc.containsKey("key");
+          if (hasNorm && !hasKey) {
+            String name = ix.getString("name");
+            if (name != null && !name.isBlank()) {
+              col.dropIndex(name);
+              LOG.info("Dropped legacy unique index '{}' on 'norm'", name);
+            }
+          }
+        }
+      }
+    } catch (RuntimeException e) {
+      // Best-effort; indexing issues shouldn't block app startup
+      LOG.warn("Failed to evaluate/drop legacy 'norm' index; continuing", e);
+    }
+
+    // 2) Ensure a unique index on top-level 'key' only for bucket documents.
     var filter = new Document("$and", List.of(
             new Document("key", new Document("$exists", true)),
             new Document("key", new Document("$type", "string"))
     ));
 
     var opts = new IndexOptions().unique(true).partialFilterExpression(filter);
-
     col.createIndex(Indexes.ascending("key"), opts);
   }
 
@@ -61,14 +94,14 @@ public class MongoLookupValueDao implements LookupValueDao {
     if (d == null) return Optional.empty();
 
     @SuppressWarnings("unchecked")
-    var arr = (java.util.List<org.bson.Document>) d.getOrDefault("values", java.util.List.of());
+    var arr = (List<Document>) d.getOrDefault("values", List.of());
 
     var values = arr.stream().map(x -> new DocValue(
             x.getString("value"),
             x.getString("norm"),
             x.getInteger("frequency", 1),
-            safeToEpochMillis(x.get("createdAt"))   // <<<<<< use tolerant parser
-    )).collect(java.util.stream.Collectors.toList());
+            safeToEpochMillis(x.get("createdAt"))
+    )).collect(Collectors.toList());
 
     return Optional.of(new Bucket(d.getString("key"), values));
   }

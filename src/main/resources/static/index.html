@@ -10,18 +10,23 @@
 <div class="container py-4">
     <label for="lookupInput" class="form-label">Lookup</label>
     <div class="position-relative" style="max-width:420px">
-        <input id="lookupInput" class="form-control" type="text" autocomplete="off" placeholder="Start typing..." />
+        <input id="lookupInput" data-key="default" class="form-control" type="text" autocomplete="off" placeholder="Start typing..." />
         <ul id="lookupMenu" class="list-group position-absolute w-100 shadow-sm" style="z-index:1000; display:none; max-height:260px; overflow:auto;"></ul>
     </div>
     <div id="toast" class="text-success small mt-2" style="display:none;"></div>
+    <label for="lookupInput" class="form-label">Lookup</label>
+    <div class="position-relative" style="max-width:420px">
+        <input id="lookupInput1" data-key="default" class="form-control" type="text" autocomplete="off" placeholder="Start typing..." />
+        <ul id="lookupMenu1" class="list-group position-absolute w-100 shadow-sm" style="z-index:1000; display:none; max-height:260px; overflow:auto;"></ul>
+    </div>
+    <div id="toast1" class="text-success small mt-2" style="display:none;"></div>
 </div>
 <script>
-    (() => {
-      const input = document.getElementById('lookupInput');
-      const menu  = document.getElementById('lookupMenu');
-      const toast = document.getElementById('toast');
-
-      const LOOKUP_KEY = 'default'; // or whatever key name you use
+    function setupLookup(inputId, menuId, toastId) {
+      const input = document.getElementById(inputId);
+      const menu  = document.getElementById(menuId);
+      const toast = document.getElementById(toastId);
+      const LOOKUP_KEY = input.dataset.key;
       const base = `/portal/api/lookup/${LOOKUP_KEY}`;
 
       let lastQuery = '';
@@ -95,7 +100,6 @@
         try {
           const url = `${base}?value=${encodeURIComponent(v)}`;
           await fetch(url, { method: 'DELETE' });
-          // refresh list to reflect deletion
           search(input.value);
         } catch {}
       };
@@ -103,9 +107,13 @@
       input.addEventListener('focus', () => search(input.value));
       input.addEventListener('input', debounce(() => search(input.value), 150));
       document.addEventListener('click', (e) => {
-        if (!e.target.closest('#lookupMenu') && e.target !== input) hideMenu();
+        if (!e.target.closest(`#${menuId}`) && e.target !== input) hideMenu();
       });
-    })();
+    }
+
+    // Usage for each lookup field:
+    setupLookup('lookupInput', 'lookupMenu', 'toast');
+    setupLookup('lookupInput1', 'lookupMenu1', 'toast1');
 </script>
 </body>
 </html>

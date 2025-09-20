@@ -1,6 +1,5 @@
 package com.siva.portal.database;
 
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +10,17 @@ import java.util.List;
 
 @Configuration
 public abstract class AbstractMongoDataSource {
-    private static final String MONGO_URI = "mongodb://localhost:27017/";
-    private static final String DATABASE_NAME = "portal"; // Replace with your DB name
+    private static final String DEFAULT_MONGO_URI = "mongodb://localhost:27017/";
+    private static final String DEFAULT_DATABASE_NAME = "portal"; // Replace with your DB name
 
     protected MongoClient mongoClient;
     protected MongoDatabase database;
 
     public AbstractMongoDataSource() {
-        mongoClient = MongoClients.create(MONGO_URI);
-        database = mongoClient.getDatabase(DATABASE_NAME);
+        String uri = getenvOrDefault("MONGODB_URI", DEFAULT_MONGO_URI);
+        String db  = getenvOrDefault("MONGODB_DB", DEFAULT_DATABASE_NAME);
+        mongoClient = MongoClients.create(uri);
+        database = mongoClient.getDatabase(db);
     }
 
     public MongoCollection<Document> getCollection(String collectionName) {
@@ -42,11 +43,22 @@ public abstract class AbstractMongoDataSource {
         try {
             if(this.database != null) return;
             if(this.mongoClient == null) {
-                this.mongoClient = MongoClients.create();
+                String uri = getenvOrDefault("MONGODB_URI", DEFAULT_MONGO_URI);
+                this.mongoClient = MongoClients.create(uri);
             }
-            this.database = new SimpleMongoClientDatabaseFactory(this.mongoClient, DATABASE_NAME).getMongoDatabase();
+            String db = getenvOrDefault("MONGODB_DB", DEFAULT_DATABASE_NAME);
+            this.database = new SimpleMongoClientDatabaseFactory(this.mongoClient, db).getMongoDatabase();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private String getenvOrDefault(String key, String def) {
+        try {
+            String v = System.getenv(key);
+            return (v == null || v.isBlank()) ? def : v;
+        } catch (SecurityException se) {
+            return def;
         }
     }
 

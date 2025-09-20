@@ -49,5 +49,25 @@ public class LookupController {
     service.deleteValue(k, value);
     return ResponseEntity.noContent().build();
   }
+
+  @GetMapping({"/suggest", "/{key}/suggest"})
+  public List<String> suggestAction(@PathVariable(required = false) String key,
+                                    @RequestParam(defaultValue = "") String q,
+                                    @RequestParam(defaultValue = "8") int limit) {
+    return suggest(key, q, limit);
+  }
+
+  @PostMapping(path = {"/add", "/{key}/add"})
+  public ResponseEntity<AddResponse> addAction(@PathVariable(required = false) String key,
+                                               @RequestBody AddRequest req) {
+    return add(key, req);
+  }
+
+  @DeleteMapping({"/delete", "/{key}/delete"})
+  public ResponseEntity<Void> deleteAction(@PathVariable(required = false) String key,
+                                           @RequestParam String value) {
+    return delete(key, value);
+  }
+
 }
 

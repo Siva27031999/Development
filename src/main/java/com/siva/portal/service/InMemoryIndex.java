@@ -80,8 +80,9 @@ public class InMemoryIndex {
 
   /**
    * Suggest values for a prefix. Ranked by:
-   *  1) frequency DESC
-   *  2) normalized lexicographic ASC
+   *  1) createdAt DESC (most recent first)
+   *  2) frequency DESC
+   *  3) normalized lexicographic ASC
    *
    * Uses top-k selection (min-heap) to avoid sorting large subtrees.
    */
@@ -98,14 +99,7 @@ public class InMemoryIndex {
       }
 
       // Min-heap keeps the "worst" item on top (lowest freq, or lexicographically larger)
-      Comparator<String> worseFirst = (a, b) -> {
-        String na = normalize(a), nb = normalize(b);
-        int fa = freq.getOrDefault(na, 0);
-        int fb = freq.getOrDefault(nb, 0);
-        if (fa != fb) return Integer.compare(fa, fb); // smaller freq = worse
-        // For equal freq, we want lexicographically larger to be worse (so it gets popped)
-        return -na.compareTo(nb);
-      };
+      Comparator<String> worseFirst = this::compareValuesWorseFirst;
       PriorityQueue<String> topk = new PriorityQueue<>(k, worseFirst);
 
       // DFS traversal of the prefix subtree; push candidates into top-k heap
@@ -122,6 +116,17 @@ public class InMemoryIndex {
     } finally {
       lock.readLock().unlock();
     }
+  }
+
+  private int compareValuesWorseFirst(String a, String b) {
+    String na = normalize(a), nb = normalize(b);
+    long ca = createdAt.getOrDefault(na, 0L);
+    long cb = createdAt.getOrDefault(nb, 0L);
+    if (ca != cb) return Long.compare(ca, cb); // older (smaller) is worse
+    int fa = freq.getOrDefault(na, 0);
+    int fb = freq.getOrDefault(nb, 0);
+    if (fa != fb) return Integer.compare(fa, fb); // smaller freq = worse
+    return -na.compareTo(nb); // larger lexicographically is worse
   }
 
   /** Remove a value (by normalized form). Safe if absent. */

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lookup Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="styles.css" rel="stylesheet"/>
+    </head>
+<body>
+<div class="container py-4">
+    <label class="form-label">Departments</label>
+    <div class="lookup-wrap position-relative" style="max-width:420px">
+        <input class="form-control" type="text" placeholder="Start typing..."
+               data-lookup data-key="departments" data-limit="8" />
+        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+    </div>
+
+    <label class="form-label mt-4">Skills</label>
+    <div class="lookup-wrap position-relative" style="max-width:420px">
+        <input class="form-control" type="text" placeholder="Start typing..."
+               data-lookup data-key="skills" data-limit="8" />
+        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+    </div>
+</div>
+<div class="container py-2">
+    <label class="form-label mt-4">Interests (multiple)</label>
+    <div class="lookup-wrap position-relative" style="max-width:420px" data-multi>
+        <div class="selected-chips d-flex flex-wrap gap-2 mb-2"></div>
+        <input class="form-control" type="text" placeholder="Type to search or add..."
+               data-lookup-multi data-key="interests" data-name="interests" data-limit="8" />
+        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+    </div>
+</div>
+<script src="scripts.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,67 @@
+/* Lookup-specific styles */
+.lookup-wrap {
+  position: relative;
+}
+
+.lookup-menu {
+  z-index: 1000;
+  display: none;
+  max-height: 260px;
+  overflow: auto;
+  top: 100%;
+  left: 0;
+}
+
+.lookup-toast {
+  display: none;
+}
+
+.list-group {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .375rem;
+}
+
+.list-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .5rem .75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, .075);
+}
+
+.list-group-item:last-child {
+  border-bottom: 0;
+}
+
+/* Utility classes used in the lookup field */
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.shadow-sm {
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+}
+
+.text-success {
+  color: #198754;
+}
+
+.small {
+  font-size: .875em;
+}
+
+.mt-2 {
+  margin-top: .5rem;
+}

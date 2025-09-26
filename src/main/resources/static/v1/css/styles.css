@@ -1,0 +1,734 @@
+/* Set the font and background for the body */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9fb;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.navbar-brand {
+    cursor: pointer;
+}
+
+/* Style the navbar with background color and shadow */
+.navbar {
+    background-color: #1a73e8;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Style the navbar brand text */
+.navbar-brand {
+    color: #ffffff !important;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+/* Style the nav links in the tabs */
+.nav-tabs .nav-link {
+    color: #1a73e8;
+    font-weight: 500;
+    border: none;
+    background-color: #f9f9fb;
+}
+
+/* Style the active nav link */
+.nav-tabs .nav-link.active {
+    color: #ffffff;
+    background-color: #1a73e8;
+    border: 1px solid #1a73e8;
+    border-bottom-color: transparent;
+}
+
+/* Style the nav tabs container */
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+/* Change color on nav link hover */
+.nav-link:hover {
+    color: #155bb5;
+}
+
+/* Style the tab content area */
+.tab-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Style the form group container */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Style the form check container */
+.form-check {
+    display: flex;
+    align-items: center;
+}
+
+/* Style the form check input */
+.form-check-input {
+    margin-right: 10px;
+}
+
+/* Style the form check label */
+.form-check-label {
+    margin-right: 20px;
+    font-weight: 500;
+    color: #333333;
+}
+
+/* Style the inline form check */
+.form-check-inline {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* Style the form label */
+.form-label {
+    font-weight: 500;
+    color: #333333;
+    flex: 0 0 150px;
+    margin-bottom: 0;
+}
+
+/* Style the form control and select elements */
+.form-control,
+.form-select {
+    flex: 1;
+    /* max-width: 280px;
+    min-width: 200px; */
+    max-width: 200px; /* Adjusted size */
+    min-width: 150px; /* Adjusted size */
+    margin-bottom: 10px; /* Reduce extra space after dropdown */
+}
+
+#tsTypeGroup {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Reduced spacing between dropdown and input */
+}
+
+#mockTsDiscCount {
+    width: auto; /* Allow the width to adjust automatically */
+    max-width: 80px; /* Set a maximum width */
+    min-width: 50px; /* Set a minimum width */
+    padding: 5px; /* Add padding for better appearance */
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+/* Style the custom button */
+.btn-custom {
+    background-color: #1a73e8;
+    color: #ffffff;
+    font-weight: 500;
+    width: 430px;
+    flex-shrink: 0;
+}
+
+/* Change background color on button hover */
+.btn-custom:hover {
+    background-color: #155bb5;
+}
+
+/* Style the button focus state */
+.btn-custom:focus {
+    outline: none;
+    background-color: #155bb5; /* Change this to your desired color */
+    color: white; /* Ensure the text color remains visible */
+}
+
+/* Ensure the button text color remains white on focus */
+.btn-custom:focus-visible {
+    color: white;
+}
+
+/* Style the console output area */
+.console-output {
+    max-width: 430px;
+    overflow-y: auto;
+    overflow-x: auto;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #333;
+    flex: 1;
+}
+
+/* Style the console header */
+.console-header {
+    font-weight: 600;
+    color: #1a73e8;
+    margin-bottom: 5px;
+}
+
+/* Style the console copy button */
+.console-copy {
+    color: #1a73e8;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+/* Underline the console copy button on hover */
+.console-copy:hover {
+    text-decoration: underline;
+}
+
+/* Style the dropdown input container in the navbar */
+.navbar .dropdown-input-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+}
+
+/* Style the input inside the dropdown input container */
+.navbar .dropdown-input-container input {
+    width: 60px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Change border color on input focus */
+.navbar .dropdown-input-container input:focus {
+    border-color: #1a73e8;
+}
+
+/* Style the file upload container */
+.file-upload {
+    position: relative;
+    border: 2px dashed #1a73e8;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    color: #1a73e8;
+    background-color: #f9f9fb;
+    transition: background-color 0.2s, border-color 0.2s;
+    max-width: 430px;
+    width: 100%;
+}
+
+/* Change background and border color on dragover */
+.file-upload.dragover {
+    background-color: #e3f2fd;
+    border-color: #155bb5;
+}
+
+/* Hide the file input */
+.file-upload input[type="file"] {
+    display: none;
+}
+
+/* Style the file upload label */
+.file-upload-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a73e8;
+    cursor: pointer;
+}
+
+/* Underline the file upload label on hover */
+.file-upload-label:hover {
+    text-decoration: underline;
+}
+
+/* Style the file upload preview text */
+.file-upload-preview {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+/* Style the switch container */
+.switch-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #333333;
+}
+
+/* Style the switch label */
+.switch-label {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+/* Style the switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+/* Hide the switch input */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Style the slider inside the switch */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 25px;
+    transition: 0.4s;
+}
+
+/* Style the slider before element */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+/* Change background color on checked input */
+input:checked + .slider {
+    background-color: #1a73e8;
+}
+
+/* Move the slider before element on checked input */
+input:checked + .slider:before {
+    transform: translateX(25px);
+}
+
+/* Style the nav link options */
+.nav-link-opt {
+    color: #ffffff !important;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-right: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+/* Change background color on nav link option hover */
+.nav-link-opt:hover {
+    color: #ffffff !important;
+    background-color: #155bb5 !important;
+    text-decoration: none;
+}
+
+/* Style the dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* Style nested dropdown menu */
+.dropdown-menu .dropdown-menu {
+    left: 100%;
+    top: 0;
+    margin-left: -10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Show dropdown menu on parent hover */
+.dropdown.show > .dropdown-menu {
+    display: block !important;
+}
+
+/* Style dropdown item on hover, focus, and active */
+.dropdown-item:hover, .dropdown-item:focus, .dropdown-item:active {
+    background-color: #f0f0f0;
+    color: #1a73e8;
+    cursor: pointer;
+}
+
+/* Style dropdown item on active and focus */
+.dropdown-item:active, .dropdown-item:focus {
+    background-color: #d9d9d9;
+    color: #1a73e8;
+}
+
+/* Change background color on navbar dropdown hover */
+.navbar-nav .dropdown:hover > .nav-link-opt {
+    background-color: #1558b0;
+}
+
+/* Change background color on dropdown item hover */
+.dropdown-menu .dropdown-item:hover {
+    background-color: #e9e9e9;
+    color: #1a73e8;
+}
+
+/* Change background color on nested dropdown item hover */
+.dropdown-menu .dropdown-menu .dropdown-item:hover {
+    background-color: #e9e9e9;
+    color: #1a73e8;
+}
+
+/* Change background color on navbar dropdown item hover */
+.navbar-nav .dropdown .dropdown-item:hover {
+    background-color: #e9e9e9;
+    color: #1a73e8;
+}
+
+/* Style active parent dropdown item */
+.nav-item.dropdown.parent-active > .nav-link-opt,
+.dropdown-item.parent-active {
+    background-color: #1558b0;
+    color: #ffffff;
+}
+
+/* Style the status container */
+.status-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the status row */
+.status-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Remove border from last status row */
+.status-row:last-child {
+    border-bottom: none;
+}
+
+/* Style the status label */
+.status-label {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 0 10px;
+    font-weight: 600;
+    color: #1a73e8;
+}
+
+/* Style the status ticker */
+.status-ticker {
+    overflow: hidden;
+    position: relative;
+    height: 30px;
+    flex: 1;
+    display: inline-block;
+    vertical-align: middle;
+    /*width: 100%;  Ensure the ticker takes the full width */
+}
+
+/* Style the scrolling text */
+.scroll-text {
+    display: inline-block;
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    animation: scroll 14s linear infinite;
+    font-family: 'Poppins', sans-serif;
+    color: #333333;
+}
+
+/* Define the scroll animation */
+@keyframes scroll {
+    0% {
+        transform: translateX(150%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Modern Console Output */
+.console-output-modern {
+    max-width: 500px;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Header for Console Output */
+.console-header-modern {
+    background: linear-gradient(90deg, #1a73e8, #155bb5);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Copy Button in Header */
+.console-copy-modern {
+    background-color: #ffffff;
+    color: #1a73e8;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.console-copy-modern:hover {
+    background-color: #e3f2fd;
+}
+
+/* Content Area for Console Output */
+.console-content-modern {
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #333333;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #f9f9fb;
+    border-top: 1px solid #e0e0e0;
+}
+
+#regionSelect, #mockRegionSelect, #uploadRegionSelect {
+    max-width: 200px !important; /* Sets the maximum width, allowing it to take approximately half the desired combined width. */
+    min-width: 150px !important; /* Ensures the select box does not become too narrow to be usable. */
+    margin: 0 !important; /* Removes any right margin to bring it closer to the toggle button. */
+    height: 38px; /* Matches the height of other input fields */
+    padding: 0 12px !important; /* Matches padding of other fields */
+    border: 1px solid #1a73e8; /* Consistent border style */
+    border-radius: 5px; /* Consistent border radius */
+    box-sizing: border-box; /* Ensures padding and border are included in width/height */
+    flex-grow: 0; /* Prevents the element from growing unnecessarily.*/
+    flex-shrink: 0; /* Prevents the element from shrinking excessively. */
+}
+.toogle-environment {
+    max-width: 50px !important; /* Sets the maximum width, allowing it to take approximately half the desired combined width. */
+    min-width: 50px !important; /* Ensures the button does not become too narrow. */
+    height: 38px; /* Matches the height of other input fields */
+    margin: 0 !important; /* Removes any left margin to bring it closer to the select box. */
+    flex-grow: 0; /* Prevents the element from growing unnecessarily. */
+    flex-shrink: 0; /* Prevents the element from shrinking excessively. */
+    border: 1px solid #1a73e8; /* Consistent border style */
+    border-radius: 5px; /* Consistent border radius */
+    box-sizing: border-box; /* Ensures padding and border are included in width/height */
+    background-color: #ffffff; /* Background color */
+    color: #1a73e8; /* Text color */
+    text-align: center; /* Centers the text horizontally */
+    line-height: 38px; /* Centers the text vertically */
+    padding: 0; /* Removes extra padding */
+    cursor: pointer; /* Adds a pointer cursor */
+}
+
+.jira-fields-container {
+    /*gap: 1rem 1rem; /* Reduces horizontal spacing between columns */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* Reduces the space between fields */
+    padding-top: 0.5rem;
+    margin-left: 0; /* Removes extra left margin */
+    margin-bottom: 0.5rem;
+    /* Centralize layout tokens for JIRA fields */
+    --jira-label-width: 150px;
+    --jira-gap: 1rem;
+    --jira-input-max: 525px;
+}
+
+.jira-field-item {
+    display: flex;
+    flex-direction: row; /* Align label and field in a row */
+    align-items: center; /* Vertically center the label and field */
+    flex-grow: 1;
+    flex-basis: calc(50% - 0.5rem); /* Ensures two columns with minimal spacing */
+    box-sizing: border-box; /* Includes padding and border in width calculation */
+    gap: 1rem; /* Adds spacing between the label and field */
+}
+
+/* Full-width row inside the Jira fields grid (e.g., radio buttons row) */
+.jira-field-item-full {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    width: 100%;
+}
+
+.jira-field-item input.form-control {
+    width: 100%;
+    max-width: 525px;
+    box-sizing: border-box;
+}
+
+.jira-field-item {
+    margin-bottom: 0; /* Reduce or remove the extra gap */
+}
+
+.jira-field-item .form-control,
+.jira-field-item .form-select {
+    margin-bottom: 0;
+}
+
+#jira .jira-field-item > .form-label {
+    pointer-events: none; /* Prevent label clicks from triggering lookup dropdown */
+}
+
+.jira-field-item-summary,
+.jira-field-item-description,
+.jira-field-item-acceptance-criteria {
+    display: flex;
+    flex-direction: column; /* Stack the span and textarea vertically */
+    align-items: flex-start; /* Align items to the left */
+    flex-grow: 1;
+    /* Show these larger fields in two columns */
+    flex-basis: calc(50% - 0.5rem);
+    width: 100%; /* Ensure the container takes the full width */
+}
+
+.jira-field-item-summary .summary-header,
+.jira-field-item-description .summary-header,
+.jira-field-item-acceptance-criteria .summary-header {
+    margin-bottom: 0; /* Remove any space below the span */
+    width: 100%; /* Ensure both the header and textarea take the full width of the container */
+    max-width: 525px; /* Set the same max-width for both elements */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+.jira-field-item-summary .form-control,
+.jira-field-item-description .form-control,
+.jira-field-item-acceptance-criteria .form-control {
+    width: 100%; /* Makes the textarea take the full width of its parent (.jira-field-item-*) */
+    box-sizing: border-box; /* Ensures padding and border are included in the 100% width calculation, preventing overflow. */
+    max-width: 525px; /* Optional: Set a maximum width for the textarea */
+    resize: vertical !important; /* Allows vertical resizing by the user, if desired. Use 'none' to disable. */
+    overflow: auto !important; /* Ensure scrollbars appear if content overflows */
+}
+
+textarea {
+    resize: vertical !important; /* Allows vertical resizing by the user, if desired. Use 'none' to disable. */
+    overflow: auto !important; /* Ensure scrollbars appear if content overflows */
+    box-sizing: border-box; /* Include padding and border in width/height calculations */
+    overflow: auto; /* Ensure scrollbars appear if content overflows */
+    max-width: 525px; /* Optional: Set a maximum width for the textarea */
+    width: 100%;    /* Ensure it takes the full width of its container */
+}
+
+.summary-header {
+    background: linear-gradient(90deg, #1a73e8, #155bb5);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 3px 8px; /* Reduce the vertical padding to decrease the height */
+    font-size: 0.9rem; /* Slightly reduce the font size */
+    display: flex;
+    justify-content: flex-start; /* Align the text to the left */
+    align-items: center;
+    border-radius: 4px 4px 0 0; /* Optional: Add rounded corners at the top */
+    margin-bottom: 5px; /* Add spacing between the header and the textarea */
+}
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0; /* Remove extra margin */
+    /*height: 100vh; Full viewport height */
+    text-align: center;
+}
+
+.console-output-modern {
+    margin-top: 10px; /* Add spacing between the button and the console */
+}
+
+/* Hover effect for the toggle button */
+.toogle-environment:hover {
+    background-color: #1a73e8;
+    color: #ffffff;
+}
+
+/* Jira tab: ensure all inputs, selects, and textareas align to same width */
+#jira .jira-fields-container .form-control,
+#jira .jira-fields-container .form-select,
+#jira .jira-fields-container textarea {
+    width: 100%;
+    max-width: var(--jira-input-max);
+    min-width: 0; /* allow flexbox to shrink within column */
+    box-sizing: border-box;
+}
+
+/* Make lookup wrapper behave like a normal control in flex row */
+#jira .jira-field-item .lookup-wrap {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: var(--jira-input-max);
+    box-sizing: border-box;
+}
+
+/* Ensure the input inside lookup fills its wrapper */
+#jira .jira-field-item .lookup-wrap .form-control {
+    width: 100%;
+    max-width: none;
+}
+
+/* Jira tab: align textarea blocks with labeled input rows */
+#jira .jira-field-item-summary .summary-header,
+#jira .jira-field-item-description .summary-header,
+#jira .jira-field-item-acceptance-criteria .summary-header,
+#jira .jira-field-item-summary textarea,
+#jira .jira-field-item-description textarea,
+#jira .jira-field-item-acceptance-criteria textarea {
+    /* Expand to equal the visual length of label + input */
+    margin-left: 0;
+    width: min(100%, calc(var(--jira-label-width) + var(--jira-gap) + var(--jira-input-max)));
+    max-width: none; /* allow to fill up to computed width */
+}

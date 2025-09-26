@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STP Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/v1/css/fonts.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/v1/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/v1/css/styles.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/v1/css/lookup.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <div class="navbar-brand">STP Portal</div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link-opt dropdown-toggle" id="newNavDropdown" role="button">
+                        CITI
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{${citiHomeUrl}}" target="_blank">Home</a></li>
+                        <li><a class="dropdown-item" th:href="@{${citiMarketplaceUrl}}" target="_blank">Marketplace</a></li>
+                        <li><a class="dropdown-item" th:href="@{${citiOneResetUrl}}" target="_blank">OneReset</a></li>
+                        <li><a class="dropdown-item" th:href="@{${citiDblmsUrl}}" target="_blank">DBReset</a></li>
+                        <li><a class="dropdown-item" th:href="@{${citiItHelpDeskUrl}}" target="_blank">IT Help</a></li>
+                        <li><a class="dropdown-item" th:href="@{${citiGlobalDirectoryUrl}}" target="_blank">Global Directory</a></li>
+                        <li><a class="dropdown-item" th:href="@{${citiTrainingUrl}}" target="_blank">Training</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link-opt dropdown-toggle" id="trimsProcessingDropdown" role="button">
+                        TRIMS-Processing
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown">
+                            <a class="dropdown-item">UAT1</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Auto-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaUat1Url}}" target="_blank">ASIA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsCbaUat1Url}}" target="_blank">CBA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaUat1Url}}" target="_blank">EMEA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaUat1Url}}" target="_blank">INDIA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamUat1Url}}" target="_blank">NAM-UAT1</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Manual-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaUat1Url + '/?skipdsso=true'}}" target="_blank">ASIA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsCbaUat1Url + '/?skipdsso=true'}}" target="_blank">CBA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaUat1Url + '/?skipdsso=true'}}" target="_blank">EMEA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaUat1Url + '/?skipdsso=true'}}" target="_blank">INDIA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamUat1Url + '/?skipdsso=true'}}" target="_blank">NAM-UAT1</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">MFA-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaUat1Url + '/trims_safeword/index.html'}}" target="_blank">ASIA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsCbaUat1Url + '/trims_safeword/index.html'}}" target="_blank">CBA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaUat1Url + '/trims_safeword/index.html'}}" target="_blank">EMEA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaUat1Url + '/trims_safeword/index.html'}}" target="_blank">INDIA-UAT1</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamUat1Url + '/trims_safeword/index.html'}}" target="_blank">NAM-UAT1</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item">UAT2</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Auto-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaUat2Url}}" target="_blank">ASIA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsCbaUat2Url}}" target="_blank">CBA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaUat2Url}}" target="_blank">EMEA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaUat2Url}}" target="_blank">INDIA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamUat2Url}}" target="_blank">NAM-UAT2</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Manual-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaUat2Url + '/?skipdsso=true'}}" target="_blank">ASIA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsCbaUat2Url + '/?skipdsso=true'}}" target="_blank">CBA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaUat2Url + '/?skipdsso=true'}}" target="_blank">EMEA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaUat2Url + '/?skipdsso=true'}}" target="_blank">INDIA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamUat2Url + '/?skipdsso=true'}}" target="_blank">NAM-UAT2</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">MFA-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaUat2Url + '/trims_safeword/index.html'}}" target="_blank">ASIA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsCbaUat2Url + '/trims_safeword/index.html'}}" target="_blank">CBA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaUat2Url + '/trims_safeword/index.html'}}" target="_blank">EMEA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaUat2Url + '/trims_safeword/index.html'}}" target="_blank">INDIA-UAT2</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamUat2Url + '/trims_safeword/index.html'}}" target="_blank">NAM-UAT2</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item">PREPROD</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Auto-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaPreUrl}}" target="_blank">ASIA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaPreUrl}}" target="_blank">EMEA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaPreUrl}}" target="_blank">INDIA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamPreUrl}}" target="_blank">NAM-PREPROD</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Manual-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaPreUrl + '/?skipdsso=true'}}" target="_blank">ASIA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaPreUrl + '/?skipdsso=true'}}" target="_blank">EMEA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaPreUrl + '/?skipdsso=true'}}" target="_blank">INDIA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamPreUrl + '/?skipdsso=true'}}" target="_blank">NAM-PREPROD</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">MFA-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaPreUrl + '/trims_safeword/index.html'}}" target="_blank">ASIA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsEmeaPreUrl + '/trims_safeword/index.html'}}" target="_blank">EMEA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaPreUrl + '/trims_safeword/index.html'}}" target="_blank">INDIA-PREPROD</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamPreUrl + '/trims_safeword/index.html'}}" target="_blank">NAM-PREPROD</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item">PTE</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Auto-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaPteUrl}}" target="_blank">ASIA-PTE</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaPteUrl}}" target="_blank">INDIA-PTE</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamPteUrl}}" target="_blank">NAM-PTE</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">Manual-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaPteUrl + '/?skipdsso=true'}}" target="_blank">ASIA-PTE</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaPteUrl + '/?skipdsso=true'}}" target="_blank">INDIA-PTE</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamPteUrl + '/?skipdsso=true'}}" target="_blank">NAM-PTE</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item">MFA-Login</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{${trimsAsiaPteUrl + '/trims_safeword/index.html'}}" target="_blank">ASIA-PTE</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsIndiaPteUrl + '/trims_safeword/index.html'}}" target="_blank">INDIA-PTE</a></li>
+                                        <li><a class="dropdown-item" th:href="@{${trimsNamPteUrl + '/trims_safeword/index.html'}}" target="_blank">NAM-PTE</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link-opt dropdown-toggle" id="trimsImagingDropdown" role="button">
+                        TRIMS-Imaging
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown">
+                            <a class="dropdown-item" >UAT1</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{${trimsAsiaImagingUat1Url}}" target="_blank">ASIA-UAT1</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsCbaUat1Url}}" target="_blank">CBA-UAT1</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsEmeaImagingUat1Url}}" target="_blank">EMEA-UAT1</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsIndiaImagingUat1Url}}" target="_blank">INDIA-UAT1</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsNamImagingUat1Url}}" target="_blank">NAM-UAT1</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item">UAT2</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{${trimsAsiaImagingUat2Url}}" target="_blank">ASIA-UAT2</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsCbaImagingUat2Url}}" target="_blank">CBA-UAT2</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsEmeaImagingUat2Url}}" target="_blank">EMEA-UAT2</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsIndiaImagingUat2Url}}" target="_blank">INDIA-UAT2</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsNamImagingUat2Url}}" target="_blank">NAM-UAT2</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item">PREPROD</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{${trimsAsiaImagingPreUrl}}" target="_blank">ASIA-PREPROD</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsEmeaImagingPreUrl}}" target="_blank">EMEA-PREPROD</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsIndiaImagingPreUrl}}" target="_blank">INDIA-PREPROD</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsNamImagingPreUrl}}" target="_blank">NAM-PREPROD</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item">PTE</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{${trimsAsiaImagingPteUrl}}" target="_blank">ASIA-PTE</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsIndiaImagingPteUrl}}" target="_blank">INDIA-PTE</a></li>
+                                <li><a class="dropdown-item" th:href="@{${trimsNamImagingPteUrl}}" target="_blank">NAM-PTE</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link-opt dropdown-toggle" id="partnerServicesDropdown" role="button">
+                        Partner-Services
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown">
+                            <a class="dropdown-item">Citidirect</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{${citidirectUat1Url}}" target="_blank">CD-UAT1</a></li>
+                                <li><a class="dropdown-item" th:href="@{${citidirectUat2Url}}" target="_blank">CD-UAT2</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item" th:href="@{${edealerUrl}}" target="_blank">Edealer</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item" th:href="@{${pactUrl}}" target="_blank">Pact</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item" th:href="@{${nerUrl}}" target="_blank">Ner</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item" th:href="@{${traydstreamUrl}}" target="_blank">Traydstream</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link-opt dropdown-toggle" id="smartToolsDropdown" role="button">
+                        Smart-Tools
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown">
+                            <a class="dropdown-item" th:href="@{${citiSquadUrl}}" target="_blank">CITI Squad</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item">Stylus</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{${stylusUrl}}" target="_blank">Stylus</a></li>
+                                <li><a class="dropdown-item" th:href="@{${stylusWorkspaceUrl}}" target="_blank">Stylus-Workspace</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item" th:href="@{${fridayAiUrl}}" target="_blank">Friday.ai</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-item" th:href="@{${kaizenUrl}}" target="_blank">Kaizen/Delphyne</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs" id="featureTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="launch-tab" data-bs-toggle="tab" data-bs-target="#launch" type="button" role="tab" aria-controls="launch" aria-selected="true">
+                Exception UI
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="mock-tab" data-bs-toggle="tab" data-bs-target="#mock" type="button" role="tab" aria-controls="mock" aria-selected="false">
+                Mock Response
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab" aria-controls="mock" aria-selected="false">
+                Upload Message
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="jira-management" data-bs-toggle="tab" data-bs-target="#jira" type="button" role="tab" aria-controls="jira" aria-selected="false">
+                Jira Management
+            </button>
+        </li>
+    </ul>
+    <!-- Status Marquee -->
+    <div id="statusContainer" class="status-container mt-3">
+        <div class="status-row">
+            <span class="status-label">ASIA</span>
+            <div class="status-ticker">
+                <span id="statusText1" class="scroll-text">Loading...</span>
+            </div>
+            <span class="status-label">EMEA</span>
+            <div class="status-ticker">
+                <span id="statusText2" class="scroll-text">Loading...</span>
+            </div>
+        </div>
+        <div class="status-row">
+            <span class="status-label">INDIA</span>
+            <div class="status-ticker">
+                <span id="statusText3" class="scroll-text">Loading...</span>
+            </div>
+            <span class="status-label">NAM</span>
+            <div class="status-ticker">
+                <span id="statusText4" class="scroll-text">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <!-- Tab Contents -->
+    <div class="tab-content" id="featureTabsContent">
+        <!-- Exception UI -->
+        <div class="tab-pane fade show active" id="launch" role="tabpanel" aria-labelledby="launch-tab">
+            <form id="regionForm">
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="expUIOptions" id="billsOption" value="Bills" checked>
+                        <label class="form-check-label" for="billsOption">Bills</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="expUIOptions" id="exceptionOfficerOption" value="Exception_Officer" required>
+                        <label class="form-check-label" for="exceptionOfficerOption">Exception Officer</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="expUIOptions" id="openAccountOption" value="Oa" required>
+                        <label class="form-check-label" for="openAccountOption">OpenAccount</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regionSelect" class="form-label">Region</label>
+                    <select class="form-select region-select" id="regionSelect" onchange="updateRegionValue(this)">
+                        <option value="ASIA" selected>ASIA</option>
+                        <option value="EMEA">EMEA</option>
+                        <option value="NAM">NAM</option>
+                        <option value="INDIA">INDIA</option>
+                    </select>
+                    <div id="toggleEnvironment" class="toogle-environment" onclick="toggleEnvValue(this)">UAT1</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userInput" class="form-label">User</label>
+                    <input type="text" id="userInput" class="form-control" maxlength="7" placeholder="Enter ID">
+                </div>
+
+                <div class="form-group">
+                    <label for="clusterInput" class="form-label">Cluster</label>
+                    <input type="text" id="clusterInput" class="form-control" maxlength="3" placeholder="Enter Cluster">
+                </div>
+
+                <div class="form-group" id="exceptionTypeGroup" style="display: none;">
+                    <label for="exceptionTypeSelect" class="form-label">Exception Type</label>
+                    <select id="exceptionTypeSelect" class="form-select">
+                        <option value="LCRDEXP">LC - Credit Exception</option>
+                        <option value="LWRKEXP">LC - Workability Exception</option>
+                        <option value="LCMPEXP">LC - Compliance Exception</option>
+                        <option value="LCSUEXP">LC - CSU Review</option>
+                        <option value="BCMPEXP">Bills - Compliance Exception</option>
+                        <option value="BCRDEXP">Bills - Credit Exception</option>
+                        <option value="BDCSEXP">Bills - Discrepancy Exception</option>
+                        <option value="BWRKEXP" selected>Bills - Workability Exception</option>
+                        <option value="BCRDCSU">Bills - CSU Review</option>
+                        <option value="BPAYEXP">Bills - Payment Exception</option>
+                        <option value="CSCRDEXP">CSTSRV - Credit Exception</option>
+                        <option value="CSWRKEXP">CSTSRV - Workability Exception</option>
+                        <option value="CSCMPEXP">CSTSRV - Compliance Exception</option>
+                        <option value="CSCRDCSU">CSTSRV - CSU Review</option>
+                        <option value="CSDCSEXP">CSTSRV - Discrepancy Exception</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-custom" onclick="launchURL()">Launch</button>
+            </form>
+        </div>
+        <!-- Mock Response -->
+        <div class="tab-pane fade" id="mock" role="tabpanel" aria-labelledby="mock-tab">
+            <form id="mockForm">
+                <div class="form-group"> <!-- Mock Region -->
+                    <label for="mockRegionSelect" class="form-label">Region</label>
+                    <select class="form-select region-select" id="mockRegionSelect" onchange="updateRegionValue(this)">
+                        <option value="ASIA" selected>ASIA</option>
+                        <option value="EMEA">EMEA</option>
+                        <option value="NAM">NAM</option>
+                        <option value="INDIA">INDIA</option>
+                    </select>
+                    <div id="mockToggleEnvironment" class="toogle-environment" onclick="toggleEnvValue(this)">UAT1</div>
+                </div>
+
+                <div class="form-group"> <!-- Reference Number -->
+                    <label for="mockTransactionRef" class="form-label">Transaction</label>
+                    <input type="text" id="mockTransactionRef" class="form-control" maxlength="20" placeholder="Enter reference">
+                </div>
+
+                <div class="form-group"> <!-- Mock Type -->
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="mockType" id="mockTypeCompliance" value="COMPLIANCE">
+                        <label class="form-check-label" for="mockTypeCompliance">Compliance</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="mockType" id="mockTypeFlex" value="FLEX">
+                        <label class="form-check-label" for="mockTypeFlex">Flex</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="mockType" id="mockTypeCfx" value="CFX">
+                        <label class="form-check-label" for="mockTypeCfx">Cfx</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="mockType" id="mockTypeTs" value="TS">
+                        <label class="form-check-label" for="mockTypeTs">Ts</label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="flexTypeGroup" style="display: none;"> <!-- Reference Number -->
+                    <label for="flexTypeSelect" class="form-label">Response Type</label>
+                    <select id="flexTypeSelect" class="form-select">
+                        <option value="" disabled selected>Select</option>
+                        <option value="EAROK">Earmarking - OK</option>
+                        <option value="EARMNK">Earmarking - MNK</option>
+                        <option value="EARBO">Earmarking - BO</option>
+                        <option value="EARTOK">Earmarking - TOK</option>
+                        <option value="ENDOK">Endorsement - OK</option>
+                        <option value="ENDMNK">Endorsement - MNK</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="tsTypeGroup" style="display: none; flex-direction: row; align-items: center; gap: 10px;">
+                    <label for="tsTypeSelect" class="form-label" style="margin-right: 10px;">Response Type</label>
+                    <select id="tsTypeSelect" class="form-select" style="max-width: 150px;">
+                        <option value="NODISC">No Disc</option>
+                        <option value="NOTIFY">Notify</option>
+                        <option value="AUTH">Auth</option>
+                        <option value="ST">ST</option>
+                    </select>
+                    <input type="number" id="mockTsDiscCount" name="tsDiscCount" class="form-control" min="0" max="20" value="0" style="max-width: 80px;" disabled>
+                </div>
+
+                <div class="form-group" name="cfxTypePanel" style="display: none;">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="cfxType" id="mockCfxACK" value="ACK">
+                        <label class="form-check-label" for="mockCfxACK">ACK</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="cfxType" id="mockCfxNACK" value="NACK">
+                        <label class="form-check-label" for="mockCfxNACK">NACK</label>
+                    </div>
+                </div>
+                <div class="form-group" name="cfxBuyAmtCalc" style="display: none;">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="cfxAmtCalc" id="cfxBuyAmtCalcH" value="ACK">
+                        <label class="form-check-label" for="cfxBuyAmtCalcH">High -> Low</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="cfxAmtCalc" id="cfxBuyAmtCalcL" value="NACK">
+                        <label class="form-check-label" for="cfxBuyAmtCalcL">Low -> High</label>
+                    </div>
+                </div>
+                <div class="form-group" name="cfxDealRate" style="display: none;">
+                    <label for="mockCfxDealRate" class="form-label">Deal Rate</label>
+                    <input type="text" id="mockCfxDealRate" name="cfxDealRate" class="form-control" placeholder="Enter rate">
+                </div>
+
+                <button type="button" class="btn btn-custom" id="submitButton">Send</button>
+                <div class="console-output-modern" id="consoleOutput">
+                    <div class="console-header-modern">
+                        <span>API Response</span>
+                        <button class="console-copy-modern" id="consoleCopy" onclick="copyConsoleContent(event, 'consoleContent')">Copy</button>
+                    </div>
+                    <div class="console-content-modern">
+                        <pre id="consoleContent"></pre>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- Upload Messages -->
+        <div class="tab-pane fade" id="upload" role="tabpanel" aria-labelledby="mock-tab">
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="uploadRegionSelect" class="form-label">Region</label>
+                    <select class="form-select region-select" id="uploadRegionSelect" onchange="updateRegionValue(this)">
+                        <option value="ASIA" selected>ASIA</option>
+                        <option value="EMEA">EMEA</option>
+                        <option value="NAM">NAM</option>
+                        <option value="INDIA">INDIA</option>
+                    </select>
+                    <div id="uploadToggleEnvironment" class="toogle-environment" onclick="toggleEnvValue(this)">UAT1</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="uploadType" class="form-label">Msg Type</label>
+                    <select id="uploadType" class="form-select">
+                        <option value="CITIDIRECT" selected>Citidirect</option>
+                        <option value="OCR">Ocr</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <div class="file-upload" id="fileUploadArea">
+                        <label for="fileInput" class="file-upload-label">
+                            Drag and drop a file here or click to upload
+                        </label>
+                        <input type="file" id="fileInput" accept=".txt" />
+                        <div class="file-upload-preview" id="filePreview" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="form-group" name="uploadProduct">
+                    <label for="uploadProduct" class="form-label">Product</label>
+                    <select id="uploadProduct" class="form-select">
+                        <option value="ECL" selected>ECL</option>
+                        <option value="ICL">ICL</option>
+                    </select>
+                </div>
+
+                <div class="form-group" name="uploadWorkunitID">
+                    <label for="uploadWorkunitID" class="form-label">Ref or WorkunitID</label>
+                    <input type="text" id="uploadWorkunitID" class="form-control" maxlength="10" placeholder="Enter WorkunitID">
+                </div>
+
+                <div class="form-group" name="uploadSolutionType">
+                    <label for="uploadSolutionType" class="form-label">Solution Type</label>
+                    <input type="text" id="uploadSolutionType" class="form-control" maxlength="8" placeholder="Enter Solution Type" value="TOCR-GT">
+                </div>
+
+                <div class="form-group">
+                    <div class="switch-container">
+                        <label class="switch-label">Mode:</label>
+                        <label class="switch">
+                            <input type="checkbox" id="stpSwitch" checked/>
+                            <span class="slider"></span>
+                        </label>
+                        <span id="switchStatus" class="ms-2">STP</span>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-custom" id="uploadButton">Upload</button>
+                <div class="console-output-modern" id="consoleOutput1">
+                    <div class="console-header-modern">
+                        <span>API Response</span>
+                        <button class="console-copy-modern" id="consoleCopy1" onclick="copyConsoleContent(event, 'consoleContent1')">Copy</button>
+                    </div>
+                    <div class="console-content-modern">
+                        <pre id="consoleContent1"></pre>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- Jira Management -->
+        <div class="tab-pane fade" id="jira" role="tabpanel" aria-labelledby="jira-tab">
+            <div class="jira-fields-container" th:attr="data-client-host=${#strings.defaultString(clientHost, 'Unknown')}" >
+                <!-- Jira action radio buttons -->
+                <div class="jira-field-item-full">
+                    <div class="form-group" id="jiraActionGroup">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="jiraAction" id="jiraCreateModify" value="CREATE_MODIFY" checked>
+                            <label class="form-check-label" for="jiraCreateModify">Create/Modify Jira</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="jiraAction" id="jiraRequestSupport" value="REQUEST_SUPPORT">
+                            <label class="form-check-label" for="jiraRequestSupport">Request Support</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="jira-field-item-summary">
+                    <div class="summary-header">
+                        <span>Summary</span>
+                    </div>
+                    <textarea id="jira-summary" placeholder="Enter Summary" rows="2" maxlength="500"></textarea>                </div>
+                <div class="jira-field-item-description">
+                    <div class="summary-header">
+                        <span>Description</span>
+                    </div>
+                    <textarea id="jira-description" placeholder="Enter Description" rows="4" maxlength="10000"></textarea>
+                </div>
+                <!--<div class="jira-field-item-acceptance-criteria">
+                    <div class="summary-header">
+                        <span>Acceptance Criteria</span>
+                    </div>
+                    <textarea id="jira-acceptance-criteria" placeholder="Enter Acceptance Criteria" rows="4" maxlength="10000"></textarea>
+                </div>-->
+                <div class="jira-field-item">
+                    <label for="jira-type" class="form-label">Type</label>
+                    <select id="jira-type" class="form-select">
+                        <option selected>Select..</option>
+                        <option>Bug</option>
+                        <option>Story</option>
+                        <option>Task</option>
+                    </select>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-id" class="form-label">Jira No.</label>
+                    <input type="text" id="jira-id" class="form-control" placeholder="Enter JIRA No." onblur="sendJiraNoToBackend()">
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-epic" class="form-label">Epic Link</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-epic" class="form-control" placeholder="Enter EPIC Jira No."
+                               data-lookup data-key="jira-epic" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-priority" class="form-label">Priority</label>
+                    <select id="jira-priority" class="form-select">
+                        <option>Highest</option>
+                        <option>High</option>
+                        <option selected>Medium</option>
+                        <option>Lowest</option>
+                        <option>#N/A</option>
+                        <option>Blocker</option>
+                    </select>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-version" class="form-label">Fix Version/s</label>
+                    <div class="lookup-wrap position-relative" data-multi>
+                        <div class="selected-chips d-flex flex-wrap gap-2 mb-2"></div>
+                        <input type="text" id="jira-version" class="form-control" placeholder="Fix or Affected Version/s"
+                               data-lookup-multi data-key="jira-version" data-name="fixVersions" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <!--<div class="jira-field-item">
+                    <label for="jira-sprint" class="form-label">Sprint</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-sprint" class="form-control" placeholder="Sprint ID"
+                               data-lookup data-key="jira-sprint" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>-->
+                <div class="jira-field-item">
+                    <label for="jira-scrum" class="form-label">Scrum-Team</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-scrum" class="form-control" placeholder="Scrum Team"
+                               data-lookup data-key="jira-scrum" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-testcase" class="form-label">Test Case Type</label>
+                    <select id="jira-testcase" class="form-select">
+                        <option selected>Functional-Standalone</option>
+                        <option>Functional-Near Partner</option>
+                        <option>Dev Test</option>
+                        <option>E2E Central</option>
+                        <option>E2E LOB QA</option>
+                        <option>E2E User</option>
+                        <option>ERT</option>
+                        <option>NFT-Batch Test</option>
+                        <option>NFT-BreakPoint Test</option>
+                        <option>NFT-Endurance Test</option>
+                        <option>NFT-Load Test</option>
+                        <option>NFT-Other</option>
+                        <option>NFT-Performance Impacted</option>
+                        <option>NFT-Performance not impacted</option>
+                        <option>NFT-Stress Test</option>
+                        <option>PVT</option>
+                        <option>Security/Vulnerability</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-regression" class="form-label">Regression</label>
+                    <select id="jira-regression" class="form-select">
+                        <option selected>No</option>
+                        <option>Yes</option>
+                    </select>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-testtype" class="form-label">Test Type</label>
+                    <select id="jira-testtype" class="form-select">
+                        <option selected>Automated</option>
+                        <option>Manual</option>
+                    </select>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-detected-env" class="form-label">Detected in Environment</label>
+                    <select id="jira-detected-env" class="form-select">
+                        <option selected>UAT</option>
+                        <option>UAT1</option>
+                        <option>UAT2</option>
+                        <option>UAT</option>
+                        <option>PTE</option>
+                        <option>NFT</option>
+                        <option>COB</option>
+                        <option>DEV</option>
+                        <option>PRE-PROD</option>
+                        <option>PROD</option>
+                    </select>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-labels" class="form-label">Labels</label>
+                    <div class="lookup-wrap position-relative" data-multi>
+                        <div class="selected-chips d-flex flex-wrap gap-2 mb-2"></div>
+                        <input type="text" id="jira-labels" class="form-control" placeholder="Fix or Affected Version/s"
+                               data-lookup-multi data-key="jira-labels" data-name="labels" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-assignee" class="form-label">Assignee</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-assignee" class="form-control" placeholder="Assignee SOEID"
+                               data-lookup data-key="jira-assignee" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <!--<div class="jira-field-item">
+                    <label for="jira-qa-contact" class="form-label">QA Contact</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-qa-contact" class="form-control" placeholder="QA Contact SOEID"
+                               data-lookup data-key="jira-qa-contact" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>-->
+                <div class="jira-field-item">
+                    <label for="jira-participants" class="form-label">Participants</label>
+                    <div class="lookup-wrap position-relative" data-multi>
+                        <div class="selected-chips d-flex flex-wrap gap-2 mb-2"></div>
+                        <input type="text" id="jira-participants" class="form-control" placeholder="Participant/s SOEID"
+                               data-lookup-multi data-key="jira-participants" data-name="participants" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-reporter" class="form-label">Reporter</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-reporter" class="form-control" placeholder="Reporter SOEID"
+                               data-lookup data-key="jira-reporter" data-limit="8">
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item">
+                    <label for="jira-client-host" class="form-label">Client Host</label>
+                    <input type="text" id="jira-client-host" class="form-control"
+                           th:value="${#strings.defaultString(clientHost, 'Unknown')}"
+                           th:attr="data-client-host=${#strings.defaultString(clientHost, 'Unknown')}" readonly>
+                </div>
+            </div>
+            <div class="center-container">
+                <button type="button" class="btn btn-custom" onclick="createJira()">Create</button>
+                <div class="console-output-modern" id="jiraConsoleOutput">
+                    <div class="console-header-modern">
+                        <span>API Response</span>
+                        <button class="console-copy-modern" onclick="copyConsoleContent(event, 'jiraConsoleContent')">Copy</button>
+                    </div>
+                    <div class="console-content-modern">
+                        <pre id="jiraConsoleContent"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    window.STP_CLIENT_HOST = [[${#strings.defaultString(clientHost, 'Unknown')}]];
+</script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/v1/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/v1/js/lookup.js}"></script>
+<script th:src="@{/v1/js/scripts.js}"></script>
+</body>
+</html>

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lookup Portal</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="styles.css" rel="stylesheet"/>
-    </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STP Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/vMain/css/styles.css}">
+</head>
 <body>
 <div class="container py-4">
     <label class="form-label">Departments</label>
@@ -34,6 +36,6 @@
         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
     </div>
 </div>
-<script src="scripts.js"></script>
+<script th:src="@{/vMain/js/scripts.js}"></script>
   </body>
   </html>

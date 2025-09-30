@@ -1,6 +1,7 @@
 package com.siva.portal.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+@Slf4j
 @Controller
 public class HomeController {
 
@@ -16,14 +18,9 @@ public class HomeController {
 
     @GetMapping("/homepage/index.html")
     public String index(HttpServletRequest request, Model model) {
+        log.info("Serving homepage/index.html is requested from {}", resolveClientHost(request));
         model.addAttribute("clientHost", resolveClientHost(request));
         return "index1.html";
-    }
-
-    @GetMapping("/homepage/index2.html")
-    public String index2(HttpServletRequest request, Model model) {
-        model.addAttribute("clientHost", resolveClientHost(request));
-        return "index2.html";
     }
 
     private String resolveClientHost(HttpServletRequest request) {
@@ -63,21 +60,94 @@ public class HomeController {
     }
 
     private String firstForwardedAddress(HttpServletRequest request) {
-        String header = request.getHeader("X-Forwarded-For");
-        if (!StringUtils.hasText(header)) {
-            header = request.getHeader("X-Real-IP");
+        // Prefer standardized Forwarded header (RFC 7239)
+        String forwarded = request.getHeader("Forwarded");
+        String candidate = extractFromForwardedHeader(forwarded);
+        if (StringUtils.hasText(candidate)) return candidate;
+
+        // Common proxy headers used by load balancers/CDNs
+        String[] headers = new String[]{
+                "True-Client-IP",          // Akamai / some ADCs
+                "CF-Connecting-IP",        // Cloudflare
+                "X-Client-IP",             // Some proxies
+                "X-Forwarded-Client-IP",   // Some proxies
+                "X-Cluster-Client-IP",     // Rackspace / Heroku
+                "X-Real-IP",               // Nginx
+                "X-Forwarded-For",         // Standard de-facto (may be a list)
+                "HTTP_X_FORWARDED_FOR",    // Legacy CGI-style
+                "X-Originating-IP",        // Some mail/proxy chains
+                "HTTP_CLIENT_IP",          // Legacy CGI-style
+                "Proxy-Client-IP",         // Weblogic/Apache
+                "WL-Proxy-Client-IP"       // WebLogic
+        };
+
+        for (String h : headers) {
+            String v = request.getHeader(h);
+            String ip = pickFirstAddressFromList(v);
+            if (StringUtils.hasText(ip)) return ip;
         }
-        if (!StringUtils.hasText(header)) {
-            return null;
+        return null;
+    }
+
+    private String extractFromForwardedHeader(String header) {
+        if (!StringUtils.hasText(header)) return null;
+        // Forwarded: for=192.0.2.60;proto=http;by=203.0.113.43
+        // Forwarded: for="[2001:db8:cafe::17]"; proto=https; by=203.0.113.43
+        String[] commaGroups = header.split(",");
+        for (String group : commaGroups) {
+            String[] params = group.split(";\s*");
+            for (String p : params) {
+                String kv = p.trim();
+                int eq = kv.indexOf('=');
+                if (eq <= 0) continue;
+                String key = kv.substring(0, eq).trim();
+                if (!"for".equalsIgnoreCase(key)) continue;
+                String val = kv.substring(eq + 1).trim();
+                // Strip optional quotes
+                if (val.startsWith("\"") && val.endsWith("\"") && val.length() >= 2) {
+                    val = val.substring(1, val.length() - 1);
+                }
+                // IPv6 may be in brackets [::1]
+                if (val.startsWith("[") && val.endsWith("]")) {
+                    val = val.substring(1, val.length() - 1);
+                }
+                // Remove optional :port
+                int colon = val.lastIndexOf(':');
+                if (colon > -1 && val.indexOf(':') == colon) { // single colon -> IPv4:port
+                    String hostPart = val.substring(0, colon);
+                    if (isValidAddressToken(hostPart)) return hostPart;
+                }
+                if (isValidAddressToken(val)) return val;
+            }
         }
+        return null;
+    }
+
+    private String pickFirstAddressFromList(String header) {
+        if (!StringUtils.hasText(header)) return null;
         String[] parts = header.split(",");
         for (String part : parts) {
             String candidate = part.trim();
-            if (candidate.length() > 0 && !"unknown".equalsIgnoreCase(candidate)) {
+            // Strip optional spaces and quotes
+            if (candidate.startsWith("\"") && candidate.endsWith("\"")) {
+                candidate = candidate.substring(1, candidate.length() - 1);
+            }
+            // Remove :port for IPv4 host:port pattern
+            int colon = candidate.lastIndexOf(':');
+            if (colon > -1 && candidate.indexOf(':') == colon) {
+                candidate = candidate.substring(0, colon);
+            }
+            if (isValidAddressToken(candidate)) {
                 return candidate;
             }
         }
         return null;
+    }
+
+    private boolean isValidAddressToken(String token) {
+        if (!StringUtils.hasText(token)) return false;
+        String t = token.trim();
+        return !"unknown".equalsIgnoreCase(t) && !"obfuscated".equalsIgnoreCase(t);
     }
 
     private String stripScopeId(String address) {

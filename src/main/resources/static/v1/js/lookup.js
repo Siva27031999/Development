@@ -18,11 +18,13 @@ function initializeLookups(contextPath) {
     const toast = wrap.querySelector('.lookup-toast');
 
     const key = (inputEl.dataset.key || 'default').trim();
+    const strict = inputEl.hasAttribute('data-lookup-strict');
     const limit = Math.max(1, Math.min(50, parseInt(inputEl.dataset.limit || '8', 10)));
     const base = `${CTX}/api/lookup/${encodeURIComponent(key)}`;
 
     let lastQuery = '';
     let hideTimer;
+    let lastItems = [];
 
     const setToast = (msg) => {
       if (!toast) return;
@@ -37,9 +39,11 @@ function initializeLookups(contextPath) {
       if (!items || items.length === 0) {
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = `<span>No matches</span>
-                        <button class="btn btn-sm btn-primary">Add '${esc(q)}'</button>`;
-        li.querySelector('button').onclick = () => addValue(q);
+        li.innerHTML = `<span>No matches</span>` + (strict ? '' : `
+                        <button class="btn btn-sm btn-primary">Add '${esc(q)}'</button>`);
+        if (!strict) {
+          li.querySelector('button').onclick = () => addValue(q);
+        }
         menu.appendChild(li);
       } else {
         items.forEach(v => {
@@ -47,14 +51,17 @@ function initializeLookups(contextPath) {
           li.className = 'list-group-item d-flex justify-content-between align-items-center';
           li.innerHTML = `<span class="me-2 flex-grow-1">${esc(v)}</span>
                           <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-secondary select-btn">Select</button>
-                            <button class="btn btn-outline-danger delete-btn" title="Delete">Delete</button>
+                            <button class="btn btn-outline-secondary select-btn">Select</button>` + (strict ? '' : `
+                            <button class="btn btn-outline-danger delete-btn" title="Delete">Delete</button>`) + `
                           </div>`;
           li.querySelector('.select-btn').onclick = () => { inputEl.value = v; hide(menu); };
-          li.querySelector('.delete-btn').onclick = () => deleteValue(v);
+          if (!strict) {
+            const delBtn = li.querySelector('.delete-btn');
+            if (delBtn) delBtn.onclick = () => deleteValue(v);
+          }
           menu.appendChild(li);
         });
-        if (q && !items.some(x => x.toLowerCase() === q.toLowerCase())) {
+        if (!strict && q && !items.some(x => x.toLowerCase() === q.toLowerCase())) {
           const li = document.createElement('li');
           li.className = 'list-group-item d-flex justify-content-between align-items-center';
           li.innerHTML = `<em class="text-muted">Not found</em>
@@ -72,9 +79,22 @@ function initializeLookups(contextPath) {
         const r = await fetch(`${base}?q=${encodeURIComponent(q)}&limit=${limit}`);
         if (!r.ok) return;
         const data = await r.json();
+        lastItems = Array.isArray(data) ? data : [];
         if (q === lastQuery) render(q, data);
       } catch {}
     };
+
+    async function validateStrictValue() {
+      if (!strict) return;
+      const v = (inputEl.value || '').trim();
+      if (!v) return; // allow empty (user cleared)
+      try {
+        const r = await fetch(`${base}?q=${encodeURIComponent(v)}&limit=${limit}`);
+        const data = r.ok ? (await r.json()) : [];
+        const ok = (data || []).some(x => (x || '').toLowerCase() === v.toLowerCase());
+        if (!ok) inputEl.value = '';
+      } catch {}
+    }
 
     const addValue = async (v) => {
       if (!v || !v.trim()) return;
@@ -102,6 +122,7 @@ function initializeLookups(contextPath) {
     // Events
     inputEl.addEventListener('focus', () => search(inputEl.value || ''));
     inputEl.addEventListener('input', debounce(() => search(inputEl.value || ''), 150));
+    inputEl.addEventListener('blur', () => { validateStrictValue(); });
     document.addEventListener('click', (e) => {
       if (!wrap.contains(e.target)) hide(menu);
     });

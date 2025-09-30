@@ -1,0 +1,84 @@
+/* Scoped styles for new Jira fields to avoid affecting existing UI */
+
+/* Utility hidden class used by Jira field toggling */
+.is-hidden { display: none !important; }
+
+/* Three-column row holding target dates and story points */
+.jira-3col-row {
+    display: flex;
+    gap: var(--jira-gap, 1rem);
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* Each column: label + control inline, matching existing field layout */
+.jira-3col-row .jira-col {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    flex: 1 1 0;
+    min-width: 220px; /* allow shrink but keep usability */
+}
+
+/* Respect Jira tab width tokens for consistency */
+#jira .jira-3col-row .form-control {
+    width: 100%;
+    max-width: var(--jira-input-max, 525px);
+    box-sizing: border-box;
+}
+
+/* Slightly enhance date pickers without relying on external libs */
+.jira-date {
+    padding-right: 2.2rem; /* space for native picker icon */
+}
+
+/* Make the native calendar indicator feel clickable and visible */
+.jira-date::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.8;
+    filter: grayscale(30%);
+}
+
+/* Tighten Issue Type width in TEM Support and generally */
+#jira [data-field="issueType"] .lookup-wrap,
+#jira [data-field="issueType"] .form-control {
+    width: 100%;
+    max-width: var(--jira-input-max, 525px);
+    box-sizing: border-box;
+}
+#jira [data-field="issueType"] .lookup-menu {
+    width: 100%;
+    max-width: var(--jira-input-max, 525px);
+}
+
+/* Ensure Issue Type aligns tightly like other fields, even when fewer fields are visible */
+#jira [data-field="issueType"] {
+    flex-basis: calc(50% - 0.5rem);
+}
+#jira [data-field="issueType"] > .form-label {
+    flex: 0 0 var(--jira-label-width, 150px);
+}
+/* Allow Issue Type input to flex like other fields so it can share a row */
+#jira [data-field="issueType"] .lookup-wrap {
+    flex: 1 1 auto;
+    max-width: var(--jira-input-max, 525px);
+}
+
+/* Responsive fallback: allow wrap on very small screens */
+@media (max-width: 900px) {
+    .jira-3col-row {
+        flex-wrap: wrap;
+    }
+    .jira-3col-row .jira-col {
+        flex: 1 1 calc(50% - var(--jira-gap, 1rem));
+        min-width: 260px;
+    }
+}
+
+@media (max-width: 600px) {
+    .jira-3col-row .jira-col {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+}

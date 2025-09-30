@@ -645,44 +645,7 @@
         filePreview.style.display = "none";
         filePreview.textContent = "";
     }
-function sendJiraNoToBackend() {
-    const jiraNo = document.getElementById('jira-id').value;
-    if (jiraNo.trim() !== '') {
-        const url = `/stp-api/api/jira/fetch?issueId=${jiraNo.trim()}`;
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Response from backend:', data);
-
-            // Update UI fields with the JiraResponse data
-            document.getElementById('jira-summary').textContent = data.fields?.summary || 'N/A';
-            document.getElementById('jira-description').textContent = data.fields?.description || 'N/A';
-            document.getElementById('jira-assignee').textContent = data.fields?.assignee?.displayName || 'N/A';
-            document.getElementById('jiraReporter').textContent = data.fields?.reporter?.displayName || 'N/A';
-            document.getElementById('jiraStatus').textContent = data.fields?.status?.name || 'N/A';
-            document.getElementById('jiraEpicLink').textContent = data.fields?.epicLink || 'N/A';
-            document.getElementById('jiraProgramIncrement').textContent = data.fields?.programIncrement || 'N/A';
-
-            // Add more fields as needed
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to fetch Jira details. Please try again.');
-        });
-    } else {
-        alert('Please enter a valid Jira number.');
-    }
-}
+// removed legacy sendJiraNoToBackend (jira-id input removed)
 
 function toggleEnvValue(element) {
     const newValue = element.textContent === 'UAT1' ? 'UAT2' : 'UAT1';

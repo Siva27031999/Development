@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/v1/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/v1/css/styles.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/v1/css/lookup.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/v1/css/jira-custom.css}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -559,20 +560,20 @@
                     <div class="form-group" id="jiraActionGroup">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="jiraAction" id="jiraCreateModify" value="CREATE_MODIFY" checked>
-                            <label class="form-check-label" for="jiraCreateModify">Create/Modify Jira</label>
+                            <label class="form-check-label" for="jiraCreateModify">Create TTS Jira</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="jiraAction" id="jiraRequestSupport" value="REQUEST_SUPPORT">
-                            <label class="form-check-label" for="jiraRequestSupport">Request Support</label>
+                            <label class="form-check-label" for="jiraRequestSupport">TEM Support</label>
                         </div>
                     </div>
                 </div>
-                <div class="jira-field-item-summary">
+                <div class="jira-field-item-summary" data-field="summary">
                     <div class="summary-header">
                         <span>Summary</span>
                     </div>
                     <textarea id="jira-summary" placeholder="Enter Summary" rows="2" maxlength="500"></textarea>                </div>
-                <div class="jira-field-item-description">
+                <div class="jira-field-item-description" data-field="description">
                     <div class="summary-header">
                         <span>Description</span>
                     </div>
@@ -584,20 +585,15 @@
                     </div>
                     <textarea id="jira-acceptance-criteria" placeholder="Enter Acceptance Criteria" rows="4" maxlength="10000"></textarea>
                 </div>-->
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="type">
                     <label for="jira-type" class="form-label">Type</label>
                     <select id="jira-type" class="form-select">
-                        <option selected>Select..</option>
-                        <option>Bug</option>
+                        <option selected>Bug</option>
                         <option>Story</option>
                         <option>Task</option>
                     </select>
                 </div>
-                <div class="jira-field-item">
-                    <label for="jira-id" class="form-label">Jira No.</label>
-                    <input type="text" id="jira-id" class="form-control" placeholder="Enter JIRA No." onblur="sendJiraNoToBackend()">
-                </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="epicLink">
                     <label for="jira-epic" class="form-label">Epic Link</label>
                     <div class="lookup-wrap position-relative">
                         <input type="text" id="jira-epic" class="form-control" placeholder="Enter EPIC Jira No."
@@ -606,18 +602,48 @@
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
                 </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="priority">
                     <label for="jira-priority" class="form-label">Priority</label>
                     <select id="jira-priority" class="form-select">
                         <option>Highest</option>
                         <option>High</option>
                         <option selected>Medium</option>
+                        <option>Low</option>
                         <option>Lowest</option>
                         <option>#N/A</option>
                         <option>Blocker</option>
                     </select>
                 </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="primaryApplication">
+                    <label for="jira-primary-application" class="form-label">Primary Application</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-primary-application" class="form-control" placeholder="Primary Application"
+                               data-lookup data-key="jira-primary-application" data-limit="8" data-lookup-strict>
+
+
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item" data-field="environment">
+                    <label for="jira-environment" class="form-label">Environment</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-environment" class="form-control" placeholder="Environment"
+                               data-lookup data-key="jira-environment" data-limit="8" data-lookup-strict>
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item" data-field="issueType">
+                    <label for="jira-issue-type" class="form-label">Issue Type</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-issue-type" class="form-control" placeholder="Issue Type"
+                               data-lookup data-key="jira-issue-type" data-limit="8" data-lookup-strict>
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="jira-field-item" data-field="fixVersions">
                     <label for="jira-version" class="form-label">Fix Version/s</label>
                     <div class="lookup-wrap position-relative" data-multi>
                         <div class="selected-chips d-flex flex-wrap gap-2 mb-2"></div>
@@ -636,7 +662,7 @@
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
                 </div>-->
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="scrumTeam">
                     <label for="jira-scrum" class="form-label">Scrum-Team</label>
                     <div class="lookup-wrap position-relative">
                         <input type="text" id="jira-scrum" class="form-control" placeholder="Scrum Team"
@@ -645,7 +671,7 @@
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
                 </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="testCaseType">
                     <label for="jira-testcase" class="form-label">Test Case Type</label>
                     <select id="jira-testcase" class="form-select">
                         <option selected>Functional-Standalone</option>
@@ -668,21 +694,14 @@
                         <option>Other</option>
                     </select>
                 </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="regression">
                     <label for="jira-regression" class="form-label">Regression</label>
                     <select id="jira-regression" class="form-select">
                         <option selected>No</option>
                         <option>Yes</option>
                     </select>
                 </div>
-                <div class="jira-field-item">
-                    <label for="jira-testtype" class="form-label">Test Type</label>
-                    <select id="jira-testtype" class="form-select">
-                        <option selected>Automated</option>
-                        <option>Manual</option>
-                    </select>
-                </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="detectedEnvironment">
                     <label for="jira-detected-env" class="form-label">Detected in Environment</label>
                     <select id="jira-detected-env" class="form-select">
                         <option selected>UAT</option>
@@ -697,7 +716,7 @@
                         <option>PROD</option>
                     </select>
                 </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="labels">
                     <label for="jira-labels" class="form-label">Labels</label>
                     <div class="lookup-wrap position-relative" data-multi>
                         <div class="selected-chips d-flex flex-wrap gap-2 mb-2"></div>
@@ -707,7 +726,7 @@
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
                 </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="assignee">
                     <label for="jira-assignee" class="form-label">Assignee</label>
                     <div class="lookup-wrap position-relative">
                         <input type="text" id="jira-assignee" class="form-control" placeholder="Assignee SOEID"
@@ -725,7 +744,7 @@
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
                 </div>-->
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="participants">
                     <label for="jira-participants" class="form-label">Participants</label>
                     <div class="lookup-wrap position-relative" data-multi>
                         <div class="selected-chips d-flex flex-wrap gap-2 mb-2"></div>
@@ -735,7 +754,7 @@
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
                 </div>
-                <div class="jira-field-item">
+                <div class="jira-field-item" data-field="reporter">
                     <label for="jira-reporter" class="form-label">Reporter</label>
                     <div class="lookup-wrap position-relative">
                         <input type="text" id="jira-reporter" class="form-control" placeholder="Reporter SOEID"
@@ -743,6 +762,19 @@
                         <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
+                </div>
+                <!-- Target dates and Story Points as standard 2-column items -->
+                <div class="jira-field-item" data-field="storyPoints">
+                    <label for="jira-story-points" class="form-label">Story Points</label>
+                    <input type="number" id="jira-story-points" class="form-control" placeholder="Story Points" min="0" step="0.5" inputmode="decimal">
+                </div>
+                <div class="jira-field-item" data-field="targetDates">
+                    <label for="jira-target-start" class="form-label">Target Start Date</label>
+                    <input type="date" id="jira-target-start" class="form-control jira-date" placeholder="YYYY-MM-DD" min="0001-01-01" max="9999-12-31">
+                </div>
+                <div class="jira-field-item" data-field="targetDates">
+                    <label for="jira-target-end" class="form-label">Target End Date</label>
+                    <input type="date" id="jira-target-end" class="form-control jira-date" placeholder="YYYY-MM-DD" min="0001-01-01" max="9999-12-31">
                 </div>
             </div>
             <div class="center-container">
@@ -765,5 +797,6 @@
 <script th:src="@{/v1/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/v1/js/lookup.js}"></script>
 <script th:src="@{/v1/js/scripts.js}"></script>
+<script th:src="@{/v1/js/jira-custom.js}"></script>
 </body>
 </html>

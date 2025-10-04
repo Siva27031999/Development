@@ -169,3 +169,35 @@
     setupJiraVisibility();
   }
 })();
+
+// Enforce single-line input for Jira Summary field
+(function(){
+  function enforceSingleLine(el){
+    if (!el) return;
+    function sanitize(){
+      var v = el.value || '';
+      var next = v.replace(/[\r\n]+/g, ' ');
+      if (next !== v) el.value = next;
+    }
+    // Block Enter key
+    el.addEventListener('keydown', function(e){
+      if (e && (e.key === 'Enter' || e.keyCode === 13)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+    // Strip any pasted or programmatic newlines
+    el.addEventListener('input', sanitize);
+    el.addEventListener('paste', function(){ setTimeout(sanitize, 0); });
+  }
+
+  function init(){
+    enforceSingleLine(document.getElementById('jira-summary'));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

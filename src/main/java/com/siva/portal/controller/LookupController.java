@@ -20,9 +20,11 @@ public class LookupController {
   @GetMapping({"", "/{key}"})
   public List<String> suggest(@PathVariable(name = "key", required = false) String key,
                               @RequestParam(defaultValue = "") String q,
-                              @RequestParam(defaultValue = "8") int limit) {
+                              @RequestParam(defaultValue = "8") int limit,
+                              @RequestParam(name = "contains", defaultValue = "false") boolean contains) {
     String k = key == null ? LookupService.DEFAULT_KEY : key;
-    return service.suggest(k, q, Math.max(1, Math.min(50, limit)));
+    int lim = Math.max(1, Math.min(50, limit));
+    return contains ? service.suggestContains(k, q, lim) : service.suggest(k, q, lim);
   }
 
   // ---- ADD ----
@@ -53,8 +55,9 @@ public class LookupController {
   @GetMapping({"/suggest", "/{key}/suggest"})
   public List<String> suggestAction(@PathVariable(required = false) String key,
                                     @RequestParam(defaultValue = "") String q,
-                                    @RequestParam(defaultValue = "8") int limit) {
-    return suggest(key, q, limit);
+                                    @RequestParam(defaultValue = "8") int limit,
+                                    @RequestParam(name = "contains", defaultValue = "false") boolean contains) {
+    return suggest(key, q, limit, contains);
   }
 
   @PostMapping(path = {"/add", "/{key}/add"})

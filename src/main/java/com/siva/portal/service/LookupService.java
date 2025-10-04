@@ -64,6 +64,14 @@ public class LookupService {
     return ensureIndexLoaded(safeKey(key)).suggest(prefix, limit);
   }
 
+  /**
+   * Suggest values where the normalized value contains the given query anywhere (substring match),
+   * preserving the same ranking as prefix suggestions. Used for broader lookup matches.
+   */
+  public List<String> suggestContains(String key, String query, int limit) {
+    return ensureIndexLoaded(safeKey(key)).suggestContains(query, limit);
+  }
+
   public void addIfAbsent(String key, String value) {
     var idx = ensureIndexLoaded(safeKey(key));
     String norm = InMemoryIndex.normalize(value);

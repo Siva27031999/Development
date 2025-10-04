@@ -118,6 +118,47 @@ public class InMemoryIndex {
     }
   }
 
+  /**
+   * Suggest values where normalized value contains the given substring anywhere.
+   * If the needle is blank, falls back to top-ranked overall suggestions.
+   */
+  public List<String> suggestContains(String needle, int limit) {
+    final int k = Math.max(1, limit);
+    String normNeedle = normalize(needle);
+
+    lock.readLock().lock();
+    try {
+      if (normNeedle.isEmpty()) {
+        // No filter -> reuse prefix logic from root
+        return suggest("", k);
+      }
+
+      Comparator<String> worseFirst = this::compareValuesWorseFirst;
+      PriorityQueue<String> topk = new PriorityQueue<>(k, worseFirst);
+
+      // Traverse all words and push matches into top-k heap
+      ArrayList<String> all = new ArrayList<>();
+      dfsCollect(root, all);
+      for (String v : all) {
+        if (normalize(v).contains(normNeedle)) {
+          if (topk.size() < k) {
+            topk.offer(v);
+          } else {
+            topk.offer(v);
+            if (topk.size() > k) topk.poll();
+          }
+        }
+      }
+
+      List<String> result = new ArrayList<>(topk.size());
+      while (!topk.isEmpty()) result.add(topk.poll());
+      Collections.reverse(result);
+      return result;
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+
   private int compareValuesWorseFirst(String a, String b) {
     String na = normalize(a), nb = normalize(b);
     long ca = createdAt.getOrDefault(na, 0L);

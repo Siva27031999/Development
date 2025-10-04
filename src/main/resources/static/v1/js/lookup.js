@@ -76,7 +76,7 @@ function initializeLookups(contextPath) {
     const search = async (q) => {
       lastQuery = q;
       try {
-        const r = await fetch(`${base}?q=${encodeURIComponent(q)}&limit=${limit}`);
+        const r = await fetch(`${base}?q=${encodeURIComponent(q)}&limit=${limit}&contains=true`);
         if (!r.ok) return;
         const data = await r.json();
         lastItems = Array.isArray(data) ? data : [];
@@ -89,6 +89,7 @@ function initializeLookups(contextPath) {
       const v = (inputEl.value || '').trim();
       if (!v) return; // allow empty (user cleared)
       try {
+        // Keep strict validation against prefix-based results to preserve legacy behavior
         const r = await fetch(`${base}?q=${encodeURIComponent(v)}&limit=${limit}`);
         const data = r.ok ? (await r.json()) : [];
         const ok = (data || []).some(x => (x || '').toLowerCase() === v.toLowerCase());
@@ -262,7 +263,7 @@ function initializeLookups(contextPath) {
     }
 
     function search(q) {
-      fetch(`${base}?q=${encodeURIComponent(q)}&limit=${limit}`)
+      fetch(`${base}?q=${encodeURIComponent(q)}&limit=${limit}&contains=true`)
         .then(r => r.ok ? r.json() : [])
         .then(data => render(q, data))
         .catch(() => render(q, []));

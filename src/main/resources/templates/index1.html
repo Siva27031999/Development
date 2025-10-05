@@ -602,6 +602,13 @@
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>
                 </div>
+                <!-- TEM Support only: show a disabled Type field fixed to Task (before Priority) -->
+                <div class="jira-field-item" data-field="typeSupport">
+                    <label for="jira-support-type" class="form-label">Type</label>
+                    <select id="jira-support-type" class="form-select" disabled>
+                        <option value="task" selected>Task</option>
+                    </select>
+                </div>
                 <div class="jira-field-item" data-field="priority">
                     <label for="jira-priority" class="form-label">Priority</label>
                     <select id="jira-priority" class="form-select">
@@ -639,6 +646,16 @@
                     <div class="lookup-wrap position-relative">
                         <input type="text" id="jira-issue-type" class="form-control" placeholder="Issue Type"
                                data-lookup data-key="jira-issue-type" data-limit="8" data-lookup-strict>
+                        <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
+                        <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+                <!-- TEM Support convenience: duplicate Reporter lookup after Issue Type (same data/behavior) -->
+                <div class="jira-field-item" data-field="reporterDup">
+                    <label for="jira-reporter-support" class="form-label">Reporter</label>
+                    <div class="lookup-wrap position-relative">
+                        <input type="text" id="jira-reporter-support" class="form-control" placeholder="Reporter SOEID"
+                               data-lookup data-key="jira-reporter" data-limit="8">
                         <ul class="list-group position-absolute w-100 shadow-sm lookup-menu"></ul>
                         <div class="lookup-toast text-success small mt-2" style="display:none;"></div>
                     </div>

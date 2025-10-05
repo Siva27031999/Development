@@ -25,6 +25,7 @@ function initializeLookups(contextPath) {
     let lastQuery = '';
     let hideTimer;
     let lastItems = [];
+    let suppressOpenOnce = false; // prevent menu reopen immediately after programmatic selection
 
     const setToast = (msg) => {
       if (!toast) return;
@@ -54,7 +55,14 @@ function initializeLookups(contextPath) {
                             <button class="btn btn-outline-secondary select-btn">Select</button>` + (strict ? '' : `
                             <button class="btn btn-outline-danger delete-btn" title="Delete">Delete</button>`) + `
                           </div>`;
-          li.querySelector('.select-btn').onclick = () => { inputEl.value = v; hide(menu); };
+          li.querySelector('.select-btn').onclick = () => {
+            suppressOpenOnce = true;
+            inputEl.value = v;
+            // Notify any listeners (e.g., mirror logic) that value changed programmatically
+            try { inputEl.dispatchEvent(new Event('input', { bubbles: true })); } catch {}
+            try { inputEl.dispatchEvent(new Event('change', { bubbles: true })); } catch {}
+            hide(menu);
+          };
           if (!strict) {
             const delBtn = li.querySelector('.delete-btn');
             if (delBtn) delBtn.onclick = () => deleteValue(v);
@@ -107,7 +115,10 @@ function initializeLookups(contextPath) {
           body: JSON.stringify({ value: v })
         });
       } catch {}
+      suppressOpenOnce = true;
       inputEl.value = v;
+      try { inputEl.dispatchEvent(new Event('input', { bubbles: true })); } catch {}
+      try { inputEl.dispatchEvent(new Event('change', { bubbles: true })); } catch {}
       hide(menu);
     };
 
@@ -122,7 +133,10 @@ function initializeLookups(contextPath) {
 
     // Events
     inputEl.addEventListener('focus', () => search(inputEl.value || ''));
-    inputEl.addEventListener('input', debounce(() => search(inputEl.value || ''), 150));
+    inputEl.addEventListener('input', debounce(() => {
+      if (suppressOpenOnce) { suppressOpenOnce = false; return; }
+      search(inputEl.value || '');
+    }, 150));
     inputEl.addEventListener('blur', () => { validateStrictValue(); });
     document.addEventListener('click', (e) => {
       if (!wrap.contains(e.target)) hide(menu);
@@ -155,6 +169,7 @@ function initializeLookups(contextPath) {
     }
 
     const selected = new Map(); // norm -> original
+    let suppressOpenOnce = false; // prevent menu reopen right after adding a chip
 
     function updateHidden() {
       hidden.value = Array.from(selected.values()).join(',');
@@ -222,8 +237,8 @@ function initializeLookups(contextPath) {
                           <button class="btn btn-primary add-local">Add '${q}'</button>
                           <button class="btn btn-outline-primary add-save">Add to lookup</button>
                         </div>`;
-        li.querySelector('.add-local').onclick = () => { if (q && q.trim()) { addChip(q); inputEl.value=''; hide(menu); } };
-        li.querySelector('.add-save').onclick  = () => { if (q && q.trim()) { persistAndAdd(q); } };
+        li.querySelector('.add-local').onclick = () => { if (q && q.trim()) { suppressOpenOnce = true; addChip(q); inputEl.value=''; hide(menu); } };
+        li.querySelector('.add-save').onclick  = () => { if (q && q.trim()) { suppressOpenOnce = true; persistAndAdd(q); } };
         menu.appendChild(li);
       } else {
         list.forEach(v => {
@@ -237,7 +252,7 @@ function initializeLookups(contextPath) {
                             <button class="btn btn-outline-danger delete-btn" title="Delete from lookup">Delete</button>
                           </div>`;
           if (!isSelected) {
-            li.querySelector('.select-btn').onclick = () => { addChip(v); inputEl.value=''; hide(menu); };
+            li.querySelector('.select-btn').onclick = () => { suppressOpenOnce = true; addChip(v); inputEl.value=''; hide(menu); };
           }
           li.querySelector('.delete-btn').onclick = () => deleteFromLookup(v);
           menu.appendChild(li);
@@ -271,12 +286,16 @@ function initializeLookups(contextPath) {
 
     // Events
     inputEl.addEventListener('focus', () => search(inputEl.value || ''));
-    inputEl.addEventListener('input', debounce(() => search(inputEl.value || ''), 150));
+    inputEl.addEventListener('input', debounce(() => {
+      if (suppressOpenOnce) { suppressOpenOnce = false; return; }
+      search(inputEl.value || '');
+    }, 150));
     inputEl.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ',' || e.key === 'Tab') {
         const v = (inputEl.value || '').trim();
         if (v) {
           e.preventDefault();
+          suppressOpenOnce = true;
           addChip(v); inputEl.value=''; hide(menu);
         }
       } else if (e.key === 'Backspace' && !inputEl.value) {

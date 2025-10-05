@@ -122,8 +122,14 @@
       selectType('task');
       enableType(false);
       // Allowed fields for TEM Support (remove 'type' from UI)
-      ['summary','description','priority','primaryApplication','environment','issueType']
+      ['summary','description','typeSupport','priority','primaryApplication','environment','issueType','reporterDup']
         .forEach(k => allowed.add(k));
+      // Sync Reporter value into the TEM Support duplicate on entry
+      var baseRep = document.getElementById('jira-reporter');
+      var supRep  = document.getElementById('jira-reporter-support');
+      if (baseRep && supRep && supRep.value !== baseRep.value) {
+        supRep.value = baseRep.value;
+      }
       // Hide target row entirely in this mode
       // Note: included by not adding 'targetRow' to allowed
     } else {
@@ -132,6 +138,16 @@
       // If coming back from TEM Support, restore previously selected Type
       if (lastAction === 'REQUEST_SUPPORT' && savedTypeBeforeSupport) {
         selectType(savedTypeBeforeSupport);
+      }
+      // When leaving TEM Support, propagate Reporter value back to the base field if needed
+      if (lastAction === 'REQUEST_SUPPORT') {
+        var baseRep2 = document.getElementById('jira-reporter');
+        var supRep2  = document.getElementById('jira-reporter-support');
+        if (baseRep2 && supRep2 && baseRep2.value !== supRep2.value) {
+          baseRep2.value = supRep2.value || '';
+          try { baseRep2.dispatchEvent(new Event('input', { bubbles: true })); } catch {}
+          try { baseRep2.dispatchEvent(new Event('change', { bubbles: true })); } catch {}
+        }
       }
       // Re-evaluate type after potential restore
       type = getTypeValue();
@@ -199,5 +215,36 @@
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
+  }
+})();
+
+// Mirror 'Reporter' value between Create TTS Jira and TEM Support duplicate
+(function(){
+  function bindMirror(){
+    var base = document.getElementById('jira-reporter');
+    var dup  = document.getElementById('jira-reporter-support');
+    if (!base || !dup) return;
+
+    var guard = false;
+    function sync(src, dst){
+      if (guard) return;
+      guard = true;
+      if (dst.value !== src.value) dst.value = src.value || '';
+      guard = false;
+    }
+    ['input','change','blur'].forEach(function(evt){
+      base.addEventListener(evt, function(){ sync(base, dup); });
+      dup.addEventListener(evt, function(){ sync(dup, base); });
+    });
+
+    // Initial alignment: prefer existing base value if present
+    if (base.value && base.value !== dup.value) dup.value = base.value;
+    else if (dup.value && dup.value !== base.value) base.value = dup.value;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindMirror);
+  } else {
+    bindMirror();
   }
 })();

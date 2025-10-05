@@ -585,9 +585,9 @@
                     </div>
                     <textarea id="jira-acceptance-criteria" placeholder="Enter Acceptance Criteria" rows="4" maxlength="10000"></textarea>
                 </div>-->
-                <div class="jira-field-item" data-field="type">
-                    <label for="jira-type" class="form-label">Type</label>
-                    <select id="jira-type" class="form-select">
+                <div class="jira-field-item jira-type-accent" data-field="type">
+                    <label for="jira-type" class="form-label">Type <span class="type-tag">Primary</span></label>
+                    <select id="jira-type" class="form-select jira-type-select">
                         <option selected>Bug</option>
                         <option>Story</option>
                         <option>Task</option>
@@ -603,9 +603,9 @@
                     </div>
                 </div>
                 <!-- TEM Support only: show a disabled Type field fixed to Task (before Priority) -->
-                <div class="jira-field-item" data-field="typeSupport">
-                    <label for="jira-support-type" class="form-label">Type</label>
-                    <select id="jira-support-type" class="form-select" disabled>
+                <div class="jira-field-item jira-type-accent" data-field="typeSupport">
+                    <label for="jira-support-type" class="form-label">Type <span class="type-tag">Primary</span></label>
+                    <select id="jira-support-type" class="form-select jira-type-select" disabled>
                         <option value="task" selected>Task</option>
                     </select>
                 </div>

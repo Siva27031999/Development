@@ -720,6 +720,44 @@ textarea {
     max-width: none;
 }
 
+/* Highlight the main Type field to increase prominence */
+#jira [data-field="type"].jira-type-accent,
+#jira [data-field="typeSupport"].jira-type-accent {
+    background-color: #eaf2fe; /* subtle blue tint */
+    border-left: 4px solid #1a73e8;
+    border-radius: 6px;
+    padding: 6px 8px;
+}
+
+#jira [data-field="type"].jira-type-accent > .form-label,
+#jira [data-field="typeSupport"].jira-type-accent > .form-label {
+    font-weight: 700;
+    color: #155bb5;
+}
+
+#jira .type-tag {
+    background-color: #dbe9ff;
+    color: #1a73e8;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    margin-left: 8px;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+
+#jira .jira-type-select {
+    border: 2px solid #1a73e8;
+    color: #155bb5;
+    font-weight: 600;
+    box-shadow: 0 0 0 2px rgba(26,115,232,0.08);
+}
+
+#jira .jira-type-select:focus {
+    outline: none;
+    border-color: #155bb5;
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.20);
+}
+
 /* Jira tab: align textarea blocks with labeled input rows */
 #jira .jira-field-item-summary .summary-header,
 #jira .jira-field-item-description .summary-header,
